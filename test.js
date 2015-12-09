@@ -19,7 +19,7 @@ describe('flatten', () => {
           type: 'object',
           properties: {
             first: { type: 'string' },
-            last: { type: 'last' },
+            last: { type: 'string' },
           }
         }
       }
@@ -41,7 +41,7 @@ describe('flatten', () => {
           type: 'object',
           properties: {
             first: { type: 'string' },
-            last: { type: 'last' },
+            last: { type: 'string' },
           }
         }
       }
@@ -58,7 +58,7 @@ describe('flatten', () => {
           type: 'object',
           properties: {
             first: { type: 'string' },
-            last: { type: 'last' },
+            last: { type: 'string' },
           }
         }
       }
@@ -81,7 +81,7 @@ describe('flatten', () => {
           type: 'object',
           properties: {
             first: { type: 'string' },
-            last: { type: 'last' },
+            last: { type: 'string' },
           }
         }
       }
