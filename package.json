@@ -1,0 +1,24 @@
+{
+  "name": "json-schema-flatten",
+  "version": "0.9.0",
+  "description": "Flatten a JSON schemas with internal references.",
+  "main": "es5/index.js",
+  "scripts": {
+    "build": "babel index.js --source-maps inline --out-file es5/index.js",
+    "prepublish": "npm run test && npm run build",
+    "test": "mocha --compilers js:babel-register test.js"
+  },
+  "author": "dieter@moeriki.com",
+  "license": "ISC",
+  "dependencies": {
+    "clone-deep": "^0.2.3",
+    "for-each-deep": "^0.9.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.3.15",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-register": "^6.3.13",
+    "chai": "^3.4.1",
+    "mocha": "^2.3.4"
+  }
+}
