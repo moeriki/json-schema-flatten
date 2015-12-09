@@ -36,7 +36,7 @@ function _flatten(schema, rootSchema = schema) {
     }
   });
 
-  return schema;
+  return schema
 }
 
 // exports
@@ -50,5 +50,7 @@ function _flatten(schema, rootSchema = schema) {
 function flatten(schema, rootSchema) {
   return _flatten(cloneDeep(schema), rootSchema)
 }
+
+module.exports = flatten
 
 export default flatten
