@@ -41,9 +41,14 @@ function _flatten(schema, rootSchema = schema) {
 
 // exports
 
-/** */
-function flatten(schema) {
-  return _flatten(cloneDeep(schema))
+/**
+ * Flatten a JSON schema.
+ * @param  {object} schema              JSON schema
+ * @param  {object} [rootSchema=schema]
+ * @return {object}                     new JSON schema with flattened object structure
+ */
+function flatten(schema, rootSchema) {
+  return _flatten(cloneDeep(schema), rootSchema)
 }
 
 export default flatten
