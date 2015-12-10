@@ -55,16 +55,6 @@ Will output.
 var flatten = require('json-schema-flatten');
 ```
 
-**flatten(** schema *:object*, [rootSchema=schema *:object*] **)** *:object*
+**flatten(** schema *:object* **)** *:object*
 
 * schema — a JSON schema. Won't be modified.
-* rootSchema — optional — the root schema is optional and will default to your schema. The root schema will be used to extend `{ definitions: … }` on
-
-*Note*: you don't have to pass a *strict* schema. We'll just iterate all properties and look for `{ type: 'object', properties: … }`. For example you can pass an array of definitions like this.
-
-```javascript
-var myDefinitionsList = [ … ];
-var mySchema = loadMySchema();
-
-var flatSchema = flatten(myDefinitionsList, mySchema);
-```

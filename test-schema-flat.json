@@ -1,0 +1,1139 @@
+{
+    "$schema": "http://localhost:8080/schema/event#",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+        "_id": {
+            "$schema": "http://localhost:8080/schema/uuid#",
+            "type": "string",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "default": "ce35c200-7623-11e4-82f8-0800200c9a66"
+        },
+        "common": {
+            "$ref": "#/definitions/common"
+        },
+        "processedBy": {
+            "$ref": "#/definitions/processedBy"
+        },
+        "consumer": {
+            "$ref": "#/definitions/consumer"
+        },
+        "dealer": {
+            "$ref": "#/definitions/dealer"
+        },
+        "product": {
+            "$ref": "#/definitions/product"
+        },
+        "response": {
+            "$ref": "#/definitions/response"
+        },
+        "vehicle": {
+            "$ref": "#/definitions/vehicle"
+        },
+        "initialData": {
+            "type": "object"
+        },
+        "eventBusinessCreationTimestamp": {
+            "type": "string"
+        },
+        "eventCreationTimestamp": {
+            "type": "string"
+        },
+        "version": {
+            "type": "number"
+        }
+    },
+    "required": [
+        "common"
+    ],
+    "definitions": {
+        "common": {
+            "$schema": "http://localhost:8080/schema/common#",
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "country",
+                "language",
+                "nmsc",
+                "scope",
+                "type"
+            ],
+            "properties": {
+                "country": {
+                    "type": "string",
+                    "default": "fi"
+                },
+                "language": {
+                    "type": "string",
+                    "default": "fi"
+                },
+                "scope": {
+                    "type": "string",
+                    "enum": [
+                        "Fleet",
+                        "Lexus",
+                        "Toyota"
+                    ],
+                    "default": "Toyota"
+                },
+                "caseId": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                },
+                "salesFunnel": {
+                    "type": "string",
+                    "enum": [
+                        "commercialOpportunityReceived",
+                        "commercialOpportunityConfirmed",
+                        "customerContacted",
+                        "opportunityRealised"
+                    ],
+                    "default": "commercialOpportunityReceived"
+                },
+                "status": {
+                    "type": "string",
+                    "default": "sent"
+                },
+                "testdata": {
+                    "type": "boolean"
+                },
+                "nmsc": {
+                    "type": "string",
+                    "default": "tfo"
+                },
+                "type": {
+                    "type": "string",
+                    "enum": [
+                        "brochureMobileRequest",
+                        "brochureRequest",
+                        "callMeMobileRequest",
+                        "callMeRequest",
+                        "contactMobileRequest",
+                        "contactRequest",
+                        "newsletterRequest",
+                        "sendToDealerRequest",
+                        "testDriveMobileRequest",
+                        "testDriveRequest",
+                        "testTestDriveRequest"
+                    ],
+                    "default": "testDriveRequest"
+                },
+                "source": {
+                    "type": "string",
+                    "default": "tme.marketingWebsite"
+                }
+            }
+        },
+        "processedBy": {
+            "$schema": "http://localhost:8080/schema/processedBy#",
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "originalEvent",
+                "processors"
+            ],
+            "properties": {
+                "originalEvent": {
+                    "type": [
+                        "object",
+                        "null"
+                    ]
+                },
+                "processors": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/processedByProcessors"
+                    }
+                }
+            }
+        },
+        "processedByProcessors": {
+            "type": "object",
+            "properties": {
+                "processor": {
+                    "type": "string"
+                },
+                "triggeringEvent": {
+                    "anyOf": [
+                        {
+                            "type": "null"
+                        },
+                        {
+                            "$ref": "#/definitions/processedByProcessors1"
+                        }
+                    ]
+                }
+            }
+        },
+        "processedByProcessors1": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "$schema": "http://localhost:8080/schema/uuid#",
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                    "default": "ce35c200-7623-11e4-82f8-0800200c9a66"
+                },
+                "_links": {
+                    "$ref": "#/definitions/processedByProcessors1_links"
+                }
+            },
+            "required": [
+                "_id",
+                "_links"
+            ],
+            "additionalProperties": false
+        },
+        "processedByProcessors1_links": {
+            "type": "object",
+            "properties": {
+                "href": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "href"
+            ],
+            "additionalProperties": false
+        },
+        "consumer": {
+            "$schema": "http://localhost:8080/schema/consumer#",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "_id": {
+                    "$schema": "http://localhost:8080/schema/uuid#",
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                    "default": "ce35c200-7623-11e4-82f8-0800200c9a66"
+                },
+                "isPerson": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "legalName": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                },
+                "vatID": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                },
+                "NACE": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                },
+                "givenName": {
+                    "type": "string",
+                    "default": "Christopher"
+                },
+                "middleName": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                },
+                "familyName": {
+                    "type": "string",
+                    "default": "Smith"
+                },
+                "familyName2": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                },
+                "familyName3": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                },
+                "nickName": {
+                    "type": "string",
+                    "default": "Chris"
+                },
+                "honorificPrefix": {
+                    "type": "string",
+                    "default": "Mr"
+                },
+                "honorificSuffix": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                },
+                "gender": {
+                    "type": "string",
+                    "default": "male"
+                },
+                "birthDate": {
+                    "type": "string",
+                    "default": "1980-03-05"
+                },
+                "nationality": {
+                    "type": "string",
+                    "default": "GB"
+                },
+                "profession": {
+                    "type": "string",
+                    "default": "Data Architect"
+                },
+                "maritalStatus": {
+                    "type": "string",
+                    "default": "Married"
+                },
+                "deceased": {
+                    "type": "boolean",
+                    "default": false
+                },
+                "numberOfChildren": {
+                    "type": "number",
+                    "default": 2
+                },
+                "hobbies": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/consumerHobbies"
+                    }
+                },
+                "identifiers": {
+                    "$ref": "#/definitions/consumerIdentifiers"
+                },
+                "consumerRelationships": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/consumerConsumerRelationships"
+                    }
+                },
+                "consumerClassification": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/consumerConsumerClassification"
+                    }
+                },
+                "consent": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/consumerConsent"
+                    }
+                },
+                "contactPoint": {
+                    "$ref": "#/definitions/consumerContactPoint"
+                },
+                "internalSystemIdentifier": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/consumerInternalSystemIdentifier"
+                    }
+                },
+                "createdTimestamp": {
+                    "type": "string",
+                    "default": "2015-03-24T06:57:23+00:00"
+                },
+                "lastUpdatedTimestamp": {
+                    "type": "string",
+                    "default": "2015-03-24T06:57:23+00:00"
+                },
+                "_links": {
+                    "$ref": "#/definitions/consumer_links"
+                }
+            }
+        },
+        "consumerHobbies": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "hobbyName": {
+                    "type": "string",
+                    "default": "Skiing"
+                }
+            }
+        },
+        "consumerIdentifiers": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "drivingLicense": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/consumerIdentifiersDrivingLicense"
+                    }
+                },
+                "nationalId": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/consumerIdentifiersNationalId"
+                    }
+                },
+                "passport": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/consumerIdentifiersPassport"
+                    }
+                },
+                "socialSecurity": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/consumerIdentifiersSocialSecurity"
+                    }
+                }
+            }
+        },
+        "consumerIdentifiersDrivingLicense": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "issuingCountry": {
+                    "type": "string",
+                    "default": "GB"
+                },
+                "expiryDate": {
+                    "type": "string",
+                    "default": "2025-04-25"
+                },
+                "drivingLicenseNumber": {
+                    "type": "string",
+                    "default": "DV67829837-AS"
+                }
+            }
+        },
+        "consumerIdentifiersNationalId": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "issuingCountry": {
+                    "type": "string",
+                    "default": "FR"
+                },
+                "expiryDate": {
+                    "type": "string",
+                    "default": "2060-04-25"
+                },
+                "idNumber": {
+                    "type": "string",
+                    "default": "34563243AGHFD"
+                }
+            }
+        },
+        "consumerIdentifiersPassport": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "issuingCountry": {
+                    "type": "string",
+                    "default": "GB"
+                },
+                "expiryDate": {
+                    "type": "string",
+                    "default": "2054-04-16"
+                },
+                "passportNumber": {
+                    "type": "string",
+                    "default": "GH42334AGHFD"
+                }
+            }
+        },
+        "consumerIdentifiersSocialSecurity": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "issuingCountry": {
+                    "type": "string",
+                    "default": "GB"
+                },
+                "expiryDate": {
+                    "type": "string",
+                    "default": "2054-04-16"
+                },
+                "socialSecurityNumber": {
+                    "type": "string",
+                    "default": "1234GG#99"
+                }
+            }
+        },
+        "consumerConsumerRelationships": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "relationshipType": {
+                    "type": "string",
+                    "default": "Employee"
+                },
+                "relationDescription": {
+                    "type": "string",
+                    "default": "Works For"
+                },
+                "toDate": {
+                    "type": "string",
+                    "default": "2009-05-24"
+                },
+                "fromDate": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "customer": {
+                    "$ref": "#/definitions/consumerConsumerRelationshipsCustomer"
+                }
+            }
+        },
+        "consumerConsumerRelationshipsCustomer": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "consumerid": {
+                    "$schema": "http://localhost:8080/schema/uuid#",
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                    "default": "ce35c200-7623-11e4-82f8-0800200c9a66"
+                },
+                "_links": {
+                    "$ref": "#/definitions/consumerConsumerRelationshipsCustomer_links"
+                }
+            }
+        },
+        "consumerConsumerRelationshipsCustomer_links": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "self": {
+                    "$ref": "#/definitions/consumerConsumerRelationshipsCustomer_linksSelf"
+                }
+            },
+            "required": [
+                "self"
+            ]
+        },
+        "consumerConsumerRelationshipsCustomer_linksSelf": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "href": {
+                    "type": "string",
+                    "default": "https://..."
+                }
+            }
+        },
+        "consumerConsumerClassification": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "TMEClassification": {
+                    "type": "string",
+                    "default": "Gold"
+                },
+                "NPS": {
+                    "type": "number",
+                    "default": 9
+                },
+                "CEX": {
+                    "type": "number",
+                    "default": 4
+                },
+                "roleType": {
+                    "type": "string",
+                    "default": "Main Driver"
+                },
+                "organisation": {
+                    "$ref": "#/definitions/consumerConsumerClassificationOrganisation"
+                }
+            }
+        },
+        "consumerConsumerClassificationOrganisation": {
+            "$schema": "http://localhost:8080/schema/organisation#",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "organisationID": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                },
+                "_links": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                }
+            }
+        },
+        "consumerConsent": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "consentType": {
+                    "type": "string",
+                    "default": "TME Global Consent Agreement v2.134"
+                },
+                "consentStatus": {
+                    "type": "string",
+                    "default": "FULL"
+                },
+                "consentDate": {
+                    "type": "string",
+                    "default": "2015-04-28"
+                },
+                "consentChannel": {
+                    "type": "string",
+                    "default": "Customer Portal"
+                },
+                "consentTimestamp": {
+                    "type": "string",
+                    "default": "2015-03-24T06:57:23+00:00"
+                },
+                "roleType": {
+                    "type": "string",
+                    "default": "Main Driver"
+                },
+                "organisation": {
+                    "$ref": "#/definitions/consumerConsentOrganisation"
+                }
+            }
+        },
+        "consumerConsentOrganisation": {
+            "$schema": "http://localhost:8080/schema/organisation#",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "organisationID": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                },
+                "_links": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                }
+            }
+        },
+        "consumerContactPoint": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "address": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/consumerContactPointAddress"
+                    }
+                },
+                "email": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/consumerContactPointEmail"
+                    }
+                },
+                "telephone": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/consumerContactPointTelephone"
+                    }
+                },
+                "socialMedia": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/consumerContactPointSocialMedia"
+                    }
+                }
+            }
+        },
+        "consumerContactPointAddress": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "contactType": {
+                    "type": "string",
+                    "enum": [
+                        "PERSONAL",
+                        "HOME",
+                        "WORK"
+                    ],
+                    "default": "WORK"
+                },
+                "addressLine1": {
+                    "type": "string",
+                    "default": "60 Avenue du Bourget"
+                },
+                "addressLine2": {
+                    "type": "string",
+                    "default": "Bourgetlaan 60"
+                },
+                "addressLine3": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                },
+                "addressLocality": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                },
+                "addressRegion": {
+                    "type": "string",
+                    "default": "Brussels"
+                },
+                "postalCode": {
+                    "type": "string",
+                    "default": "1140"
+                },
+                "country": {
+                    "type": "string",
+                    "default": "Belgium"
+                },
+                "longitude": {
+                    "type": "number",
+                    "default": 50.878622
+                },
+                "latitude": {
+                    "type": "number",
+                    "default": 4.435
+                },
+                "comments": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                },
+                "toDate": {
+                    "type": "string",
+                    "default": "2014-01-22"
+                },
+                "fromDate": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                },
+                "roleType": {
+                    "type": "string",
+                    "default": "Main Driver"
+                },
+                "organisation": {
+                    "$ref": "#/definitions/consumerContactPointAddressOrganisation"
+                }
+            }
+        },
+        "consumerContactPointAddressOrganisation": {
+            "$schema": "http://localhost:8080/schema/organisation#",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "organisationID": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                },
+                "_links": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                }
+            }
+        },
+        "consumerContactPointEmail": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "contactType": {
+                    "type": "string",
+                    "enum": [
+                        "PERSONAL",
+                        "HOME",
+                        "WORK"
+                    ],
+                    "default": "WORK"
+                },
+                "email": {
+                    "type": "string",
+                    "default": "christopher.smith@somecompany.com"
+                },
+                "comments": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                },
+                "toDate": {
+                    "type": "string",
+                    "default": "2014-01-22"
+                },
+                "fromDate": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                },
+                "roleType": {
+                    "type": "string",
+                    "default": "Main Driver"
+                },
+                "organisation": {
+                    "$ref": "#/definitions/consumerContactPointEmailOrganisation"
+                }
+            }
+        },
+        "consumerContactPointEmailOrganisation": {
+            "$schema": "http://localhost:8080/schema/organisation#",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "organisationID": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                },
+                "_links": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                }
+            }
+        },
+        "consumerContactPointTelephone": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "contactType": {
+                    "type": "string",
+                    "enum": [
+                        "PERSONAL",
+                        "HOME",
+                        "WORK"
+                    ],
+                    "default": "WORK"
+                },
+                "countryCode": {
+                    "type": "string",
+                    "default": "44"
+                },
+                "telephoneNumber": {
+                    "type": "string",
+                    "default": "01162689567"
+                },
+                "mobile": {
+                    "type": "boolean",
+                    "default": false
+                },
+                "comments": {
+                    "type": "string",
+                    "default": "After 6 only"
+                },
+                "toDate": {
+                    "type": "string",
+                    "default": "2014-01-22"
+                },
+                "fromDate": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                },
+                "roleType": {
+                    "type": "string",
+                    "default": "Main Driver"
+                },
+                "organisation": {
+                    "$ref": "#/definitions/consumerContactPointTelephoneOrganisation"
+                }
+            }
+        },
+        "consumerContactPointTelephoneOrganisation": {
+            "$schema": "http://localhost:8080/schema/organisation#",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "organisationID": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                },
+                "_links": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                }
+            }
+        },
+        "consumerContactPointSocialMedia": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "contactType": {
+                    "type": "string",
+                    "enum": [
+                        "PERSONAL",
+                        "HOME",
+                        "WORK"
+                    ],
+                    "default": "PERSONAL"
+                },
+                "socialMedia": {
+                    "type": "string",
+                    "default": "FACEBOOK"
+                },
+                "userName": {
+                    "type": "string",
+                    "default": "csmithy"
+                },
+                "comments": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                },
+                "toDate": {
+                    "type": "string",
+                    "default": "2014-01-22"
+                },
+                "fromDate": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                },
+                "roleType": {
+                    "type": "string",
+                    "default": "Main Driver"
+                },
+                "organisation": {
+                    "$ref": "#/definitions/consumerContactPointSocialMediaOrganisation"
+                }
+            }
+        },
+        "consumerContactPointSocialMediaOrganisation": {
+            "$schema": "http://localhost:8080/schema/organisation#",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "organisationID": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                },
+                "_links": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                }
+            }
+        },
+        "consumerInternalSystemIdentifier": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "systemNamespace": {
+                    "type": "string",
+                    "default": "http://crm.tgb.toyota.com/customer"
+                },
+                "systemIdentifier": {
+                    "type": "string",
+                    "default": "12345"
+                },
+                "nmscCode": {
+                    "type": "string",
+                    "default": "TGB"
+                },
+                "dealerCode": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                },
+                "systemName": {
+                    "type": "string",
+                    "default": "CRM"
+                },
+                "identifierTimestamp": {
+                    "type": "string",
+                    "default": "2015-03-24T06:57:23+00:00"
+                },
+                "roleType": {
+                    "type": "string",
+                    "default": "Main Driver"
+                },
+                "organisation": {
+                    "$ref": "#/definitions/consumerInternalSystemIdentifierOrganisation"
+                }
+            }
+        },
+        "consumerInternalSystemIdentifierOrganisation": {
+            "$schema": "http://localhost:8080/schema/organisation#",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "organisationID": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                },
+                "_links": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                }
+            }
+        },
+        "consumer_links": {
+            "type": "object",
+            "properties": {
+                "self": {
+                    "$ref": "#/definitions/consumer_linksSelf"
+                }
+            }
+        },
+        "consumer_linksSelf": {
+            "type": "object",
+            "properties": {
+                "href": {
+                    "type": "string"
+                }
+            }
+        },
+        "dealer": {
+            "$schema": "http://localhost:8080/schema/dealer#",
+            "type": "object",
+            "additionalProperties": true,
+            "properties": {
+                "uuid": {
+                    "type": "string",
+                    "default": "60f2f1c1-2fd8-11d4-a1b0-00508b8b464e"
+                }
+            }
+        },
+        "product": {
+            "$schema": "http://localhost:8080/schema/product#",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "brand": {
+                    "type": "string",
+                    "default": "TOYOTA"
+                },
+                "model": {
+                    "type": "string",
+                    "default": "AVENSIS"
+                },
+                "katashiki": {
+                    "type": "string",
+                    "default": "ADT270L-AEFGYW"
+                },
+                "localModelCode": {
+                    "type": "string",
+                    "default": "*NMSCLOCALCODE*"
+                },
+                "suffix": {
+                    "type": "string",
+                    "default": "1A"
+                },
+                "project": {
+                    "type": "string",
+                    "default": "870A"
+                },
+                "projectId": {
+                    "type": "string",
+                    "default": "c8f43243-d333-4d77-9270-aef5c1a3fb7a"
+                },
+                "orderableSuffixId": {
+                    "type": "string",
+                    "default": "c8f43243-d333-4d77-9270-aef5c1a3fb7a"
+                },
+                "localConfigurationId": {
+                    "type": "string",
+                    "default": "c8f43243-d333-4d77-9270-aef5c1a3fb7a"
+                }
+            }
+        },
+        "response": {
+            "$schema": "http://localhost:8080/schema/response#",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "activityType": {
+                    "type": "string",
+                    "enum": [
+                        "respondByEmail",
+                        "respondByPhone",
+                        "invalidLead",
+                        "restoreLead"
+                    ]
+                },
+                "duration": {
+                    "type": "integer",
+                    "description": "Response duration in minutes."
+                },
+                "salesPerson": {
+                    "$ref": "#/definitions/responseSalesPerson"
+                },
+                "notes": {
+                    "type": "string",
+                    "description": "Any details on the response. (eg. phone conversation detail, or URL to the mail response)"
+                },
+                "time": {
+                    "type": "string",
+                    "description": "Response time in UTC time."
+                }
+            }
+        },
+        "responseSalesPerson": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Not used by TME. Fill in local ID for your own future reference."
+                },
+                "name": {
+                    "type": "string",
+                    "description": "The full name of the salesperson."
+                },
+                "email": {
+                    "type": "string"
+                }
+            }
+        },
+        "vehicle": {
+            "$schema": "http://localhost:8080/schema/vehicle#",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "vin": {
+                    "type": "string",
+                    "default": "AHTDR22G305521913"
+                },
+                "initRegDate": {
+                    "type": "string",
+                    "default": "01/03/2014"
+                },
+                "regNumber": {
+                    "type": "string",
+                    "default": "1-AGX909"
+                }
+            }
+        }
+    }
+}

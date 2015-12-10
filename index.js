@@ -1,54 +1,67 @@
 // vendor modules
 
+import capitalize from 'capitalize'
 import cloneDeep from 'clone-deep'
-import forEachDeep from 'for-each-deep/es5'
 
 // private functions
 
 /** */
-function _flatten(schema, rootSchema = schema) {
-  forEachDeep(schema, (value, key, obj, currentPath) => {
-    if (value.type === 'object' && value.properties) {
-      let objectRefName = null
-
-      if (value.$schema) {
-        objectRefName = value.$schema.match(/([\w_]+)(\.\w+)?\W*$/, '$1')[1]
-      } else if (obj.type === 'array') {
-        const pathParts = currentPath.split('.');
-        objectRefName = (pathParts[pathParts.length - 2] || 'root') + 'Item'
-      } else {
-        objectRefName = key
-      }
-
-      rootSchema.definitions = rootSchema.definitions || {}
-      if (rootSchema.definitions[objectRefName]) {
-        let indexModifier = 1;
-        while (schema.definitions[`${objectRefName}_${indexModifier}`] != null) {
-          indexModifier++
-        }
-        objectRefName += `_${indexModifier}`
-      }
-
-      rootSchema.definitions[objectRefName] = obj[key]
-      obj[key] = { $ref: `#/definitions/${objectRefName}` }
-
-      _flatten(rootSchema.definitions[objectRefName], rootSchema)
-    }
-  });
-
-  return schema
+function isJSONSchema(obj) {
+  return typeof obj === 'object' && (
+    (obj.type === 'object' && typeof obj.properties === 'object') ||
+    (obj.type === 'array' && typeof obj.items === 'object')
+  )
 }
 
 // exports
 
 /**
  * Flatten a JSON schema.
- * @param  {object} schema              JSON schema
- * @param  {object} [rootSchema=schema]
- * @return {object}                     new JSON schema with flattened object structure
+ * @param  {object} data a JSON schema
+ * @return {object}      new JSON schema with flattened object structure
  */
-function flatten(schema, rootSchema) {
-  return _flatten(cloneDeep(schema), rootSchema)
+function flatten(schema) {
+  const newSchema = cloneDeep(schema)
+
+  const definitions = schema.definitions || {}
+  schema.definitions = null
+
+  /** */
+  function crawl(obj, basePath = '') {
+    Object.keys(obj).forEach((key) => {
+      const prop = obj[key]
+
+      if (isJSONSchema(prop)) {
+        let refName = key
+        if (prop.$schema) {
+          refName = prop.$schema.match(/([\w_]+)(\.\w+)?\W*$/, '$1')[1]
+        }
+
+        const refPath = basePath.length !== 0 ? basePath + capitalize(refName) : refName
+        if (definitions[refPath]) {
+          throw new Error(`definition path already taken: ${refPath}`)
+        }
+
+        if (prop.type === 'object') {
+          definitions[refPath] = prop
+          obj[key] = { $ref: `#/definitions/${refPath}` }
+        } else if (prop.type === 'array') {
+          definitions[refPath] = prop.items
+          prop.items = { $ref: `#/definitions/${refPath}` }
+        }
+
+        crawl(definitions[refPath], refPath)
+      } else if (typeof prop === 'object') {
+        crawl(prop, basePath)
+      }
+    })
+  }
+
+  crawl(newSchema)
+
+  newSchema.definitions = definitions
+
+  return newSchema
 }
 
 module.exports = flatten

@@ -6,6 +6,9 @@ import { expect } from 'chai'
 
 import flatten from './index'
 
+import testSchema from './test-schema.json'
+import testSchemaFlat from './test-schema-flat.json'
+
 // tests
 
 describe('flatten', () => {
@@ -20,21 +23,22 @@ describe('flatten', () => {
           properties: {
             first: { type: 'string' },
             last: { type: 'string' },
-          }
-        }
-      }
+          },
+        },
+      },
     }
 
     // test
-    const flatSchema = flatten(schema);
+    const flatSchema = flatten(schema)
+    // console.log(JSON.stringify(flatSchema, null, 4))
 
     // verify
     expect(flatSchema).to.deep.equal({
       type: 'object',
       properties: {
         name: {
-          $ref: '#/definitions/name'
-        }
+          $ref: '#/definitions/name',
+        },
       },
       definitions: {
         name: {
@@ -42,9 +46,9 @@ describe('flatten', () => {
           properties: {
             first: { type: 'string' },
             last: { type: 'string' },
-          }
-        }
-      }
+          },
+        },
+      },
     })
   })
 
@@ -59,21 +63,21 @@ describe('flatten', () => {
           properties: {
             first: { type: 'string' },
             last: { type: 'string' },
-          }
-        }
-      }
+          },
+        },
+      },
     }
 
     // test
-    const flatSchema = flatten(schema);
+    const flatSchema = flatten(schema)
 
     // verify
     expect(flatSchema).to.deep.equal({
       type: 'object',
       properties: {
         name: {
-          $ref: '#/definitions/person'
-        }
+          $ref: '#/definitions/person',
+        },
       },
       definitions: {
         person: {
@@ -82,13 +86,13 @@ describe('flatten', () => {
           properties: {
             first: { type: 'string' },
             last: { type: 'string' },
-          }
-        }
-      }
+          },
+        },
+      },
     })
   })
 
-  it('should use the array name if possible', () => {
+  it('should flatten a nested array type', () => {
     // setup
     const schema = {
       type: 'object',
@@ -100,10 +104,10 @@ describe('flatten', () => {
             properties: {
               type: { type: 'string' },
               address: { type: 'string' },
-            }
-          }
-        }
-      }
+            },
+          },
+        },
+      },
     }
 
     // test
@@ -116,50 +120,28 @@ describe('flatten', () => {
         email: {
           type: 'array',
           items: {
-            $ref: '#/definitions/emailItem'
-          }
-        }
+            $ref: '#/definitions/email',
+          },
+        },
       },
       definitions: {
-        emailItem: {
+        email: {
           type: 'object',
           properties: {
             type: { type: 'string' },
             address: { type: 'string' },
-          }
-        }
-      }
+          },
+        },
+      },
     })
   })
 
-  it('should use root if object is part of root array', () => {
-    // setup
-    const schema = {
-      type: 'array',
-      items: {
-        type: 'object',
-        properties: {
-          number: { type: 'number' }
-        }
-      }
-    }
-
+  it('should flatten a complex schema', () => {
     // test
-    const flatSchema = flatten(schema);
+    const flatSchema = flatten(testSchema)
 
     // verify
-    expect(flatSchema).to.deep.equal({
-      type: 'array',
-      items: { $ref: '#/definitions/rootItem' },
-      definitions: {
-        rootItem: {
-          type: 'object',
-          properties: {
-            number: { type: 'number' }
-          }
-        }
-      }
-    })
+    expect(flatSchema).to.deep.equal(testSchemaFlat)
   })
 
-});
+})
