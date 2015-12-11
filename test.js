@@ -1,6 +1,7 @@
 // vendor modules
 
 import { expect } from 'chai'
+import deepFreeze from 'deep-freeze'
 
 // modules
 
@@ -29,8 +30,8 @@ describe('flatten', () => {
     }
 
     // test
-    const flatSchema = flatten(schema)
     // console.log(JSON.stringify(flatSchema, null, 4))
+    const flatSchema = flatten(deepFreeze(schema))
 
     // verify
     expect(flatSchema).to.deep.equal({
@@ -69,7 +70,7 @@ describe('flatten', () => {
     }
 
     // test
-    const flatSchema = flatten(schema)
+    const flatSchema = flatten(deepFreeze(schema))
 
     // verify
     expect(flatSchema).to.deep.equal({
@@ -111,7 +112,7 @@ describe('flatten', () => {
     }
 
     // test
-    const flatSchema = flatten(schema)
+    const flatSchema = flatten(deepFreeze(schema))
 
     // verify
     expect(flatSchema).to.deep.equal({
@@ -138,7 +139,7 @@ describe('flatten', () => {
 
   it('should flatten a complex schema', () => {
     // test
-    const flatSchema = flatten(testSchema)
+    const flatSchema = flatten(deepFreeze(testSchema))
 
     // verify
     expect(flatSchema).to.deep.equal(testSchemaFlat)

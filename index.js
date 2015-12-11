@@ -24,7 +24,10 @@ function flatten(schema) {
   const newSchema = cloneDeep(schema)
 
   const definitions = schema.definitions || {}
-  schema.definitions = null
+
+  if (newSchema.definitions) {
+    newSchema.definitions = null
+  }
 
   /** */
   function crawl(obj, basePath = '') {
@@ -59,7 +62,9 @@ function flatten(schema) {
 
   crawl(newSchema)
 
-  newSchema.definitions = definitions
+  if (Object.keys(definitions).length !== 0) {
+    newSchema.definitions = definitions
+  }
 
   return newSchema
 }
