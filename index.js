@@ -6,8 +6,13 @@ import cloneDeep from 'clone-deep'
 // private functions
 
 /** */
+function isObject(obj) {
+  return obj === Object(obj)
+}
+
+/** */
 function isJSONSchema(obj) {
-  return typeof obj === 'object' && (
+  return isObject(obj) && (
     (obj.type === 'object' && typeof obj.properties === 'object') ||
     (obj.type === 'array' && typeof obj.items === 'object')
   )
@@ -54,7 +59,7 @@ function flatten(schema) {
         }
 
         crawl(definitions[refPath], refPath)
-      } else if (typeof prop === 'object') {
+      } else if (isObject(prop)) {
         crawl(prop, basePath)
       }
     })

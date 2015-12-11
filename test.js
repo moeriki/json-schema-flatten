@@ -30,7 +30,6 @@ describe('flatten', () => {
     }
 
     // test
-    // console.log(JSON.stringify(flatSchema, null, 4))
     const flatSchema = flatten(deepFreeze(schema))
 
     // verify
@@ -143,6 +142,24 @@ describe('flatten', () => {
 
     // verify
     expect(flatSchema).to.deep.equal(testSchemaFlat)
+  })
+
+  it('should do nothing on random objects', () => {
+    // setup
+    const obj = {
+      one: 1,
+      two: 0x2,
+      three: Boolean,
+      four: false,
+      five: null,
+      six: undefined,
+    }
+
+    // test
+    const resultObj = flatten(deepFreeze(obj))
+
+    // verify
+    expect(resultObj).to.deep.equal(obj)
   })
 
 })
