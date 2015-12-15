@@ -98,14 +98,6 @@ describe('flatten', () => {
     })
   })
 
-  it('should flatten a complex schema', () => {
-    // test
-    const flatSchema = flatten(deepFreeze(testSchema))
-
-    // verify
-    expect(flatSchema).to.deep.equal(testSchemaFlat)
-  })
-
   it('should do nothing on random objects', () => {
     // setup
     const obj = {
@@ -275,6 +267,14 @@ describe('flatten', () => {
         },
       },
     })
+  })
+
+  it('should flatten a complex schema', () => {
+    // test
+    const flatSchema = flatten(deepFreeze(testSchema))
+
+    // verify
+    expect(flatSchema).to.deep.equal(testSchemaFlat)
   })
 
 })
