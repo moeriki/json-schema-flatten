@@ -35,6 +35,18 @@ function flatten(schema) {
   }
 
   /** */
+  function findFreeDefinitionName(name) {
+    if (!definitions[name]) {
+      return name
+    }
+    let index = 1
+    while (definitions[`${name}_${index}`]) {
+      index++
+    }
+    return `${name}_${index}`
+  }
+
+  /** */
   function crawl(obj, {
     basePath = '',
     refRedirects = {},
@@ -58,10 +70,7 @@ function flatten(schema) {
       if (isJSONSchema(prop)) {
         const refName = key
 
-        const refPath = basePath.length !== 0 ? basePath + capitalize(refName) : refName
-        if (definitions[refPath]) {
-          throw new Error(`definition path already taken: ${refPath}`)
-        }
+        const refPath = findFreeDefinitionName(basePath.length ? basePath + capitalize(refName) : refName)
 
         if (prop.type === 'object') {
           definitions[refPath] = prop
@@ -76,7 +85,7 @@ function flatten(schema) {
 
           Object.keys(prop.definitions).forEach((propDefinitionName) => {
             const propDefinition = prop.definitions[propDefinitionName]
-            const prefixedPropDefinitionName = `${refPath}Definition` + capitalize(propDefinitionName)
+            const prefixedPropDefinitionName = findFreeDefinitionName(`${refPath}Definition` + capitalize(propDefinitionName))
 
             definitions[prefixedPropDefinitionName] = propDefinition
 
