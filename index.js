@@ -35,7 +35,23 @@ function flatten(schema) {
   }
 
   /** */
-  function crawl(obj, base = { path: '' }) {
+  function crawl(obj, {
+    basePath = '',
+    refRedirects = {},
+  } = {
+    basePath: '',
+    refRedirects: {},
+  }) {
+    if (obj.$ref) {
+      Object.keys(refRedirects).forEach((refRedirectFrom) => {
+        if (obj.$ref === `#/definitions/${refRedirectFrom}`) {
+          const refRedirectTo = refRedirects[refRedirectFrom]
+          obj.$ref = `#/definitions/${refRedirectTo}`
+        }
+      })
+      return
+    }
+
     Object.keys(obj).forEach((key) => {
       const prop = obj[key]
 
@@ -45,7 +61,7 @@ function flatten(schema) {
           refName = prop.$schema.match(/([\w_]+)(\.\w+)?\W*$/, '$1')[1]
         }
 
-        const refPath = base.path.length !== 0 ? base.path + capitalize(refName) : refName
+        const refPath = basePath.length !== 0 ? basePath + capitalize(refName) : refName
         if (definitions[refPath]) {
           throw new Error(`definition path already taken: ${refPath}`)
         }
@@ -58,18 +74,28 @@ function flatten(schema) {
           prop.items = { $ref: `#/definitions/${refPath}` }
         }
 
-        crawl(definitions[refPath], {
-          path: refPath,
-        })
+        if (prop.definitions) {
+          refRedirects = Object.assign({}, refRedirects)
+
+          Object.keys(prop.definitions).forEach((propDefinitionName) => {
+            const propDefinition = prop.definitions[propDefinitionName]
+            const prefixedPropDefinitionName = refPath + capitalize(propDefinitionName)
+            definitions[prefixedPropDefinitionName] = propDefinition
+            refRedirects[propDefinitionName] = prefixedPropDefinitionName
+          })
+          delete prop.definitions
+        }
+
+        crawl(definitions[refPath], { basePath: refPath, refRedirects })
       } else if (isObject(prop)) {
-        crawl(prop, base)
+        crawl(prop, { basePath, refRedirects })
       }
     })
   }
 
   Object.keys(definitions).forEach((existingDefinitionName) => {
     const existingDefinition = definitions[existingDefinitionName]
-    crawl(existingDefinition, { path: existingDefinitionName })
+    crawl(existingDefinition, { basePath: existingDefinitionName })
   })
 
   crawl(newSchema)

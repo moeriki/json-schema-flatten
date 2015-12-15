@@ -1,3 +1,5 @@
+require('babel-polyfill')
+
 // vendor modules
 
 import { expect } from 'chai'
@@ -207,6 +209,48 @@ describe('flatten', () => {
             first: { type: 'string' },
             last: { type: 'string' },
           },
+        },
+      },
+    })
+  })
+
+  it('should take definitions from nested objects and put them prefixed on the root', () => {
+    // setup
+    const schema = {
+      type: 'object',
+      properties: {
+        name: {
+          type: 'object',
+          properties: {
+            first: { $ref: '#/definitions/str' },
+            last: { $ref: '#/definitions/str' },
+          },
+          definitions: {
+            str: { type: 'string' },
+          },
+        },
+      },
+    }
+
+    // test
+    const flatSchema = flatten(deepFreeze(schema))
+
+    // verify
+    expect(flatSchema).to.deep.equal({
+      type: 'object',
+      properties: {
+        name: { $ref: '#/definitions/name' },
+      },
+      definitions: {
+        name: {
+          type: 'object',
+          properties: {
+            first: { $ref: '#/definitions/nameStr' },
+            last: { $ref: '#/definitions/nameStr' },
+          },
+        },
+        nameStr: {
+          type: 'string',
         },
       },
     })
