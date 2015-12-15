@@ -162,4 +162,54 @@ describe('flatten', () => {
     expect(resultObj).to.deep.equal(obj)
   })
 
+  it('should flatten a nested object type in an existing definition', () => {
+    // setup
+    const schema = {
+      type: 'object',
+      properties: {
+        person: { $ref: '#/definitions/person' },
+      },
+      definitions: {
+        person: {
+          type: 'object',
+          properties: {
+            name: {
+              type: 'object',
+              properties: {
+                first: { type: 'string' },
+                last: { type: 'string' },
+              },
+            },
+          },
+        },
+      },
+    }
+
+    // test
+    const flatSchema = flatten(deepFreeze(schema))
+
+    // verify
+    expect(flatSchema).to.deep.equal({
+      type: 'object',
+      properties: {
+        person: { $ref: '#/definitions/person' },
+      },
+      definitions: {
+        person: {
+          type: 'object',
+          properties: {
+            name: { $ref: '#/definitions/personName' },
+          },
+        },
+        personName: {
+          type: 'object',
+          properties: {
+            first: { type: 'string' },
+            last: { type: 'string' },
+          },
+        },
+      },
+    })
+  })
+
 })

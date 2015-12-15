@@ -28,7 +28,7 @@ function isJSONSchema(obj) {
 function flatten(schema) {
   const newSchema = cloneDeep(schema)
 
-  const definitions = schema.definitions || {}
+  const definitions = newSchema.definitions || {}
 
   if (newSchema.definitions) {
     newSchema.definitions = null
@@ -66,6 +66,11 @@ function flatten(schema) {
       }
     })
   }
+
+  Object.keys(definitions).forEach((existingDefinitionName) => {
+    const existingDefinition = definitions[existingDefinitionName]
+    crawl(existingDefinition, { path: existingDefinitionName })
+  })
 
   crawl(newSchema)
 
