@@ -76,7 +76,7 @@ function flatten(schema) {
 
           Object.keys(prop.definitions).forEach((propDefinitionName) => {
             const propDefinition = prop.definitions[propDefinitionName]
-            const prefixedPropDefinitionName = refPath + capitalize(propDefinitionName)
+            const prefixedPropDefinitionName = `${refPath}Definition` + capitalize(propDefinitionName)
 
             definitions[prefixedPropDefinitionName] = propDefinition
 

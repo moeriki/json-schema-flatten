@@ -205,11 +205,11 @@ describe('flatten', () => {
         name: {
           type: 'object',
           properties: {
-            first: { $ref: '#/definitions/nameStr' },
-            last: { $ref: '#/definitions/nameStr' },
+            first: { $ref: '#/definitions/nameDefinitionStr' },
+            last: { $ref: '#/definitions/nameDefinitionStr' },
           },
         },
-        nameStr: {
+        nameDefinitionStr: {
           type: 'string',
         },
       },
@@ -257,16 +257,16 @@ describe('flatten', () => {
         family: {
           type: 'object',
           properties: {
-            father: { $ref: '#/definitions/familyPerson' },
+            father: { $ref: '#/definitions/familyDefinitionPerson' },
           },
         },
-        familyPerson: {
+        familyDefinitionPerson: {
           type: 'object',
           properties: {
-            name: { $ref: '#/definitions/familyPersonName' },
+            name: { $ref: '#/definitions/familyDefinitionPersonName' },
           },
         },
-        familyPersonName: {
+        familyDefinitionPersonName: {
           type: 'object',
           properties: {
             first: { type: 'string' },
