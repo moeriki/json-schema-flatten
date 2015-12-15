@@ -35,7 +35,7 @@ function flatten(schema) {
   }
 
   /** */
-  function crawl(obj, basePath = '') {
+  function crawl(obj, base = { path: '' }) {
     Object.keys(obj).forEach((key) => {
       const prop = obj[key]
 
@@ -45,7 +45,7 @@ function flatten(schema) {
           refName = prop.$schema.match(/([\w_]+)(\.\w+)?\W*$/, '$1')[1]
         }
 
-        const refPath = basePath.length !== 0 ? basePath + capitalize(refName) : refName
+        const refPath = base.path.length !== 0 ? base.path + capitalize(refName) : refName
         if (definitions[refPath]) {
           throw new Error(`definition path already taken: ${refPath}`)
         }
@@ -58,9 +58,11 @@ function flatten(schema) {
           prop.items = { $ref: `#/definitions/${refPath}` }
         }
 
-        crawl(definitions[refPath], refPath)
+        crawl(definitions[refPath], {
+          path: refPath,
+        })
       } else if (isObject(prop)) {
-        crawl(prop, basePath)
+        crawl(prop, base)
       }
     })
   }
