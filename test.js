@@ -256,4 +256,65 @@ describe('flatten', () => {
     })
   })
 
+  it('should flatten nested objects in definitions in nested objects', () => {
+    // setup
+    const schema = {
+      type: 'object',
+      properties: {
+        family: {
+          type: 'object',
+          properties: {
+            father: { $ref: '#/definitions/person' },
+          },
+          definitions: {
+            person: {
+              type: 'object',
+              properties: {
+                name: {
+                  type: 'object',
+                  properties: {
+                    first: { type: 'string' },
+                    last: { type: 'string' },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    }
+
+    // test
+    const flatSchema = flatten(deepFreeze(schema))
+
+    // verify
+    expect(flatSchema).to.deep.equal({
+      type: 'object',
+      properties: {
+        family: { $ref: '#/definitions/family' },
+      },
+      definitions: {
+        family: {
+          type: 'object',
+          properties: {
+            father: { $ref: '#/definitions/familyPerson' },
+          },
+        },
+        familyPerson: {
+          type: 'object',
+          properties: {
+            name: { $ref: '#/definitions/familyPersonName' },
+          },
+        },
+        familyPersonName: {
+          type: 'object',
+          properties: {
+            first: { type: 'string' },
+            last: { type: 'string' },
+          },
+        },
+      },
+    })
+  })
+
 })

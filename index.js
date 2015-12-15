@@ -80,8 +80,15 @@ function flatten(schema) {
           Object.keys(prop.definitions).forEach((propDefinitionName) => {
             const propDefinition = prop.definitions[propDefinitionName]
             const prefixedPropDefinitionName = refPath + capitalize(propDefinitionName)
+
             definitions[prefixedPropDefinitionName] = propDefinition
+
             refRedirects[propDefinitionName] = prefixedPropDefinitionName
+
+            crawl(definitions[prefixedPropDefinitionName], {
+              basePath: prefixedPropDefinitionName,
+              refRedirects,
+            })
           })
           delete prop.definitions
         }
