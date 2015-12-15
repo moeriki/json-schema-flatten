@@ -1,6 +1,6 @@
 {
   "name": "json-schema-flatten",
-  "version": "0.10.1",
+  "version": "0.10.2",
   "description": "Flatten a JSON schemas with internal references.",
   "main": "es5/index.js",
   "scripts": {
