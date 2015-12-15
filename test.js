@@ -54,13 +54,13 @@ describe('flatten', () => {
     })
   })
 
-  it('should use the $schema name if possible', () => {
+  it('should use the id name if possible', () => {
     // setup
     const schema = {
       type: 'object',
       properties: {
         name: {
-          $schema: 'http://localhost:8080/schema/person.json#',
+          id: 'http://localhost:8080/schema/person.json#',
           type: 'object',
           properties: {
             first: { type: 'string' },
@@ -83,7 +83,7 @@ describe('flatten', () => {
       },
       definitions: {
         person: {
-          $schema: 'http://localhost:8080/schema/person.json#',
+          id: 'http://localhost:8080/schema/person.json#',
           type: 'object',
           properties: {
             first: { type: 'string' },
