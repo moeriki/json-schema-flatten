@@ -56,13 +56,7 @@ function flatten(schema) {
       const prop = obj[key]
 
       if (isJSONSchema(prop)) {
-        let refName = key
-        if (prop.id) {
-          const idMatch = prop.id.match(/([\w_]+)(\.\w+)?\W*$/)
-          if (idMatch) {
-            refName = idMatch[1]
-          }
-        }
+        const refName = key
 
         const refPath = basePath.length !== 0 ? basePath + capitalize(refName) : refName
         if (definitions[refPath]) {

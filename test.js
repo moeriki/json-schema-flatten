@@ -54,46 +54,6 @@ describe('flatten', () => {
     })
   })
 
-  it('should use the id name if possible', () => {
-    // setup
-    const schema = {
-      type: 'object',
-      properties: {
-        name: {
-          id: 'http://localhost:8080/schema/person.json#',
-          type: 'object',
-          properties: {
-            first: { type: 'string' },
-            last: { type: 'string' },
-          },
-        },
-      },
-    }
-
-    // test
-    const flatSchema = flatten(deepFreeze(schema))
-
-    // verify
-    expect(flatSchema).to.deep.equal({
-      type: 'object',
-      properties: {
-        name: {
-          $ref: '#/definitions/person',
-        },
-      },
-      definitions: {
-        person: {
-          id: 'http://localhost:8080/schema/person.json#',
-          type: 'object',
-          properties: {
-            first: { type: 'string' },
-            last: { type: 'string' },
-          },
-        },
-      },
-    })
-  })
-
   it('should flatten a nested array type', () => {
     // setup
     const schema = {
