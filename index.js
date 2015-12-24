@@ -120,6 +120,4 @@ function flatten(schema) {
   return newSchema
 }
 
-module.exports = flatten
-
 export default flatten
