@@ -4,26 +4,1008 @@
   "type": "object",
   "additionalProperties": false,
   "properties": {
+    "_id": {
+      "id": "http://localhost:8080/schema/uuid#",
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+      "example": "ce35c200-7623-11e4-82f8-0800200c9a66"
+    },
+    "common": {
+      "$ref": "#/definitions/common"
+    },
+    "processedBy": {
+      "$ref": "#/definitions/processedBy"
+    },
+    "consumer": {
+      "$ref": "#/definitions/consumer"
+    },
     "dealer": {
       "$ref": "#/definitions/dealer"
+    },
+    "product": {
+      "$ref": "#/definitions/product"
+    },
+    "response": {
+      "$ref": "#/definitions/response"
+    },
+    "vehicle": {
+      "$ref": "#/definitions/vehicle"
+    },
+    "initialData": {
+      "type": "object"
+    },
+    "eventBusinessCreationTimestamp": {
+      "type": "string"
+    },
+    "eventCreationTimestamp": {
+      "type": "string"
+    },
+    "version": {
+      "type": "number"
     }
   },
+  "required": [
+    "common"
+  ],
   "definitions": {
+    "common": {
+      "id": "http://localhost:8080/schema/common#",
+      "$schema": "http://json-schema.org/draft-04/hyper-schema",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "country",
+        "language",
+        "nmsc",
+        "scope",
+        "type"
+      ],
+      "properties": {
+        "localId": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string",
+          "example": "fi"
+        },
+        "language": {
+          "type": "string",
+          "example": "fi"
+        },
+        "scope": {
+          "type": "string",
+          "enum": [
+            "Fleet",
+            "Lexus",
+            "Toyota"
+          ],
+          "example": "Toyota"
+        },
+        "caseId": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "salesFunnel": {
+          "type": "string",
+          "enum": [
+            "commercialOpportunityReceived",
+            "commercialOpportunityReceivedByDealer",
+            "commercialOpportunityReceivedByNMSC",
+            "commercialOpportunityResponded",
+            "customerContacted",
+            "opportunityRealised"
+          ],
+          "example": "commercialOpportunityReceived"
+        },
+        "status": {
+          "type": "string",
+          "example": "sent"
+        },
+        "testdata": {
+          "type": "boolean"
+        },
+        "nmsc": {
+          "type": "string",
+          "example": "tfo"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "brochureMobileRequest",
+            "brochureRequest",
+            "callMeMobileRequest",
+            "callMeRequest",
+            "contactMobileRequest",
+            "contactRequest",
+            "newsletterRequest",
+            "sendToDealerRequest",
+            "testDriveMobileRequest",
+            "testDriveRequest",
+            "testTestDriveRequest"
+          ],
+          "example": "testDriveRequest"
+        },
+        "source": {
+          "type": "string",
+          "example": "tme.marketingWebsite"
+        }
+      }
+    },
+    "processedBy": {
+      "id": "http://localhost:8080/schema/processedBy#",
+      "$schema": "http://json-schema.org/draft-04/hyper-schema",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "originalEvent",
+        "processors"
+      ],
+      "properties": {
+        "originalEvent": {
+          "$ref": "#/definitions/processedByOriginalEvent"
+        },
+        "processors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/processedByProcessors_1"
+          }
+        }
+      }
+    },
+    "processedByOriginalEvent": {
+      "id": "http://localhost:8080/schema/eventReference#",
+      "type": "object",
+      "properties": {
+        "_id": {
+          "id": "http://localhost:8080/schema/uuid#",
+          "type": "string",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+          "example": "ce35c200-7623-11e4-82f8-0800200c9a66"
+        },
+        "_links": {
+          "$ref": "#/definitions/processedByOriginalEvent_links"
+        }
+      },
+      "required": [
+        "_id",
+        "_links"
+      ],
+      "additionalProperties": false
+    },
+    "processedByOriginalEvent_links": {
+      "type": "object",
+      "properties": {
+        "href": {
+          "type": "string",
+          "example": "http://localhost:8080/event/2f886c37-698f-4192-92f0-8699d18e43bf"
+        }
+      },
+      "required": [
+        "href"
+      ],
+      "additionalProperties": false
+    },
+    "processedByProcessors": {
+      "type": "object",
+      "properties": {
+        "processor": {
+          "type": "string"
+        },
+        "triggeringEvent": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/processedByProcessors1"
+            }
+          ]
+        }
+      }
+    },
+    "processedByProcessors1": {
+      "id": "http://localhost:8080/schema/eventReference#",
+      "type": "object",
+      "properties": {
+        "_id": {
+          "id": "http://localhost:8080/schema/uuid#",
+          "type": "string",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+          "example": "ce35c200-7623-11e4-82f8-0800200c9a66"
+        },
+        "_links": {
+          "$ref": "#/definitions/processedByProcessors1_links"
+        }
+      },
+      "required": [
+        "_id",
+        "_links"
+      ],
+      "additionalProperties": false
+    },
+    "processedByProcessors1_links": {
+      "type": "object",
+      "properties": {
+        "href": {
+          "type": "string",
+          "example": "http://localhost:8080/event/2f886c37-698f-4192-92f0-8699d18e43bf"
+        }
+      },
+      "required": [
+        "href"
+      ],
+      "additionalProperties": false
+    },
+    "consumer": {
+      "id": "http://localhost:8080/schema/consumer#",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "person"
+          ]
+        },
+        "id": {
+          "type": "string"
+        },
+        "attributes": {
+          "$ref": "#/definitions/consumerAttributes"
+        },
+        "relationships": {
+          "description": "Members of the relationships object (\"relationships\") represent references from the resource object in which it's defined to other resource objects.",
+          "type": "object",
+          "patternProperties": {
+            "^\\w[-\\w_]*$": {
+              "properties": {
+                "links": {
+                  "$ref": "#/definitions/consumerLinks"
+                },
+                "data": {
+                  "description": "Member, whose value represents \"resource linkage\".",
+                  "oneOf": [
+                    {
+                      "description": "References to other resource objects in a to-one (\"relationship\"). Relationships can be specified by including a member in a resource's links object.",
+                      "anyOf": [
+                        {
+                          "description": "Describes an empty to-one relationship.",
+                          "type": "null"
+                        },
+                        {
+                          "$ref": "#/definitions/consumer1"
+                        }
+                      ]
+                    },
+                    {
+                      "description": "An array of objects each containing \"type\" and \"id\" members for to-many relationships.",
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/definitions/consumer1_2"
+                      },
+                      "uniqueItems": true
+                    }
+                  ]
+                },
+                "meta": {
+                  "$ref": "#/definitions/consumerMeta"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        },
+        "links": {
+          "$ref": "#/definitions/consumerLinks_1"
+        },
+        "meta": {
+          "$ref": "#/definitions/consumerMeta_1"
+        }
+      },
+      "additionalProperties": true
+    },
+    "consumerAttributes": {
+      "description": "Members of the attributes object (\"attributes\") represent information about the resource object in which it's defined.",
+      "type": "object",
+      "properties": {
+        "givenName": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "description": "An array of string",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/consumerAttributes1_9"
+              },
+              "uniqueItems": true
+            }
+          ]
+        },
+        "middleName": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "description": "An array of string",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/consumerAttributes1_10"
+              },
+              "uniqueItems": true
+            }
+          ]
+        },
+        "familyName": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "description": "An array of string",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/consumerAttributes1_11"
+              },
+              "uniqueItems": true
+            }
+          ]
+        },
+        "familyName2": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "description": "An array of string",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/consumerAttributes1_12"
+              },
+              "uniqueItems": true
+            }
+          ]
+        },
+        "familyName3": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "description": "An array of string",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/consumerAttributes1_13"
+              },
+              "uniqueItems": true
+            }
+          ]
+        },
+        "honorificPrefix": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "description": "An array of string",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/consumerAttributes1_14"
+              },
+              "uniqueItems": true
+            }
+          ]
+        },
+        "honoroficSuffix": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "description": "An array of string",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/consumerAttributes1_15"
+              },
+              "uniqueItems": true
+            }
+          ]
+        },
+        "gender": {
+          "oneOf": [
+            {
+              "type": "string",
+              "enum": [
+                "male",
+                "female"
+              ]
+            },
+            {
+              "description": "An array of gender values",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/consumerAttributes1_16"
+              },
+              "uniqueItems": true
+            }
+          ]
+        },
+        "nationality": {
+          "oneOf": [
+            {
+              "description": "2 digit ISO country code in upper case",
+              "type": "string",
+              "enum": [
+                "AF",
+                "AL",
+                "DZ",
+                "AS",
+                "AD",
+                "AO",
+                "AI",
+                "AQ",
+                "AG",
+                "AR",
+                "AM",
+                "AW",
+                "AU",
+                "AT",
+                "AZ",
+                "BS",
+                "BH",
+                "BD",
+                "BB",
+                "BY",
+                "BE",
+                "BZ",
+                "BJ",
+                "BM",
+                "BT",
+                "BO",
+                "BQ",
+                "BA",
+                "BW",
+                "BV",
+                "BR",
+                "IO",
+                "BN",
+                "BG",
+                "BF",
+                "BI",
+                "KH",
+                "CM",
+                "CA",
+                "CV",
+                "KY",
+                "CF",
+                "TD",
+                "CL",
+                "CN",
+                "CX",
+                "CC",
+                "CO",
+                "KM",
+                "CG",
+                "CD",
+                "CK",
+                "CR",
+                "HR",
+                "CU",
+                "CW",
+                "CY",
+                "CZ",
+                "CI",
+                "DK",
+                "DJ",
+                "DM",
+                "DO",
+                "EC",
+                "EG",
+                "SV",
+                "GQ",
+                "ER",
+                "EE",
+                "ET",
+                "FK",
+                "FO",
+                "FJ",
+                "FI",
+                "FR",
+                "GF",
+                "PF",
+                "TF",
+                "GA",
+                "GM",
+                "GE",
+                "DE",
+                "GH",
+                "GI",
+                "GR",
+                "GL",
+                "GD",
+                "GP",
+                "GU",
+                "GT",
+                "GG",
+                "GN",
+                "GW",
+                "GY",
+                "HT",
+                "HM",
+                "VA",
+                "HN",
+                "HK",
+                "HU",
+                "IS",
+                "IN",
+                "ID",
+                "IR",
+                "IQ",
+                "IE",
+                "IM",
+                "IL",
+                "IT",
+                "JM",
+                "JP",
+                "JE",
+                "JO",
+                "KZ",
+                "KE",
+                "KI",
+                "KP",
+                "KR",
+                "KW",
+                "KG",
+                "LA",
+                "LV",
+                "LB",
+                "LS",
+                "LR",
+                "LY",
+                "LI",
+                "LT",
+                "LU",
+                "MO",
+                "MK",
+                "MG",
+                "MW",
+                "MY",
+                "MV",
+                "ML",
+                "MT",
+                "MH",
+                "MQ",
+                "MR",
+                "MU",
+                "YT",
+                "MX",
+                "FM",
+                "MD",
+                "MC",
+                "MN",
+                "ME",
+                "MS",
+                "MA",
+                "MZ",
+                "MM",
+                "NA",
+                "NR",
+                "NP",
+                "NL",
+                "NC",
+                "NZ",
+                "NI",
+                "NE",
+                "NG",
+                "NU",
+                "NF",
+                "MP",
+                "NO",
+                "OM",
+                "PK",
+                "PW",
+                "PS",
+                "PA",
+                "PG",
+                "PY",
+                "PE",
+                "PH",
+                "PN",
+                "PL",
+                "PT",
+                "PR",
+                "QA",
+                "RO",
+                "RU",
+                "RW",
+                "RE",
+                "BL",
+                "SH",
+                "KN",
+                "LC",
+                "MF",
+                "PM",
+                "VC",
+                "WS",
+                "SM",
+                "ST",
+                "SA",
+                "SN",
+                "RS",
+                "SC",
+                "SL",
+                "SG",
+                "SX",
+                "SK",
+                "SI",
+                "SB",
+                "SO",
+                "ZA",
+                "GS",
+                "SS",
+                "ES",
+                "LK",
+                "SD",
+                "SR",
+                "SJ",
+                "SZ",
+                "SE",
+                "CH",
+                "SY",
+                "TW",
+                "TJ",
+                "TZ",
+                "TH",
+                "TL",
+                "TG",
+                "TK",
+                "TO",
+                "TT",
+                "TN",
+                "TR",
+                "TM",
+                "TC",
+                "TV",
+                "UG",
+                "UA",
+                "AE",
+                "GB",
+                "US",
+                "UM",
+                "UY",
+                "UZ",
+                "VU",
+                "VE",
+                "VN",
+                "VG",
+                "VI",
+                "WF",
+                "EH",
+                "YE",
+                "ZM",
+                "ZW",
+                "AX"
+              ]
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/consumerAttributes1_17"
+              },
+              "uniqueItems": true
+            }
+          ]
+        },
+        "identifiers": {
+          "$ref": "#/definitions/consumerAttributesIdentifiers"
+        },
+        "contactPoints": {
+          "$ref": "#/definitions/consumerAttributesContactPoints"
+        },
+        "internalSystemIdentifiers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/consumerAttributesInternalSystemIdentifiers_1"
+          },
+          "uniqueItems": true
+        },
+        "createdTimestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "lastUpdatedTimestamp": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "patternProperties": {
+        "^(?!relationships$|links$)\\w[-\\w_]*$": {
+          "description": "Attributes may contain any valid JSON value."
+        }
+      },
+      "additionalProperties": false
+    },
+    "consumerAttributes1": {
+      "type": "string"
+    },
+    "consumerAttributes1_1": {
+      "type": "string"
+    },
+    "consumerAttributes1_2": {
+      "type": "string"
+    },
+    "consumerAttributes1_3": {
+      "type": "string"
+    },
+    "consumerAttributes1_4": {
+      "type": "string"
+    },
+    "consumerAttributes1_5": {
+      "type": "string"
+    },
+    "consumerAttributes1_6": {
+      "type": "string"
+    },
+    "consumerAttributes1_7": {
+      "type": "string",
+      "enum": [
+        "male",
+        "female"
+      ]
+    },
+    "consumerAttributes1_8": {
+      "#ref": "#/definitions/countryCode"
+    },
+    "consumerAttributesIdentifiers": {
+      "type": "object",
+      "properties": {
+        "nationalid": {
+          "#ref": "#/definitions/identifiers"
+        }
+      }
+    },
+    "consumerAttributesContactPoints": {
+      "type": "object",
+      "properties": {
+        "addresses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/consumerAttributesContactPointsAddresses_1"
+          },
+          "uniqueItems": true
+        },
+        "emails": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/consumerAttributesContactPointsEmails_1"
+          },
+          "uniqueItems": true
+        },
+        "telephones": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/consumerAttributesContactPointsTelephones_1"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "consumerAttributesContactPointsAddresses": {
+      "#ref": "#/definitions/address"
+    },
+    "consumerAttributesContactPointsEmails": {
+      "#ref": "#/definitions/email"
+    },
+    "consumerAttributesContactPointsTelephones": {
+      "#ref": "#/definitions/telephone"
+    },
+    "consumerAttributesInternalSystemIdentifiers": {
+      "#ref": "#/definitions/systemIdentifier"
+    },
+    "consumerLinks": {
+      "description": "A resource object **MAY** contain references to other resource objects (\"relationships\"). Relationships may be to-one or to-many. Relationships can be specified by including a member in a resource's links object.",
+      "type": "object",
+      "properties": {
+        "self": {
+          "description": "A `self` member, whose value is a URL for the relationship itself (a \"relationship URL\"). This URL allows the client to directly manipulate the relationship. For example, it would allow a client to remove an `author` from an `article` without deleting the people resource itself.",
+          "type": "string",
+          "format": "uri"
+        },
+        "related": {
+          "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
+          "oneOf": [
+            {
+              "description": "A string containing the link's URL.",
+              "type": "string",
+              "format": "uri"
+            },
+            {
+              "$ref": "#/definitions/consumerLinks1"
+            }
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "consumerLinks1": {
+      "type": "object",
+      "required": [
+        "href"
+      ],
+      "properties": {
+        "href": {
+          "description": "A string containing the link's URL.",
+          "type": "string",
+          "format": "uri"
+        },
+        "meta": {
+          "$ref": "#/definitions/consumerLinks1Meta"
+        }
+      }
+    },
+    "consumerLinks1Meta": {
+      "description": "Non-standard meta-information that can not be represented as an attribute or relationship.",
+      "type": "object",
+      "properties": {
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": true
+    },
+    "consumer1": {
+      "description": "The \"type\" and \"id\" to non-empty members.",
+      "type": "object",
+      "required": [
+        "type",
+        "id"
+      ],
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "meta": {
+          "$ref": "#/definitions/consumer1Meta"
+        }
+      },
+      "additionalProperties": false
+    },
+    "consumer1Meta": {
+      "description": "Non-standard meta-information that can not be represented as an attribute or relationship.",
+      "type": "object",
+      "properties": {
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": true
+    },
+    "consumer1_1": {
+      "description": "The \"type\" and \"id\" to non-empty members.",
+      "type": "object",
+      "required": [
+        "type",
+        "id"
+      ],
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "meta": {
+          "$ref": "#/definitions/consumer1_1Meta"
+        }
+      },
+      "additionalProperties": false
+    },
+    "consumer1_1Meta": {
+      "description": "Non-standard meta-information that can not be represented as an attribute or relationship.",
+      "type": "object",
+      "properties": {
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": true
+    },
+    "consumerMeta": {
+      "description": "Non-standard meta-information that can not be represented as an attribute or relationship.",
+      "type": "object",
+      "properties": {
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": true
+    },
+    "consumerLinks_1": {
+      "description": "A resource object **MAY** contain references to other resource objects (\"relationships\"). Relationships may be to-one or to-many. Relationships can be specified by including a member in a resource's links object.",
+      "type": "object",
+      "properties": {
+        "self": {
+          "description": "A `self` member, whose value is a URL for the relationship itself (a \"relationship URL\"). This URL allows the client to directly manipulate the relationship. For example, it would allow a client to remove an `author` from an `article` without deleting the people resource itself.",
+          "type": "string",
+          "format": "uri"
+        },
+        "related": {
+          "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
+          "oneOf": [
+            {
+              "description": "A string containing the link's URL.",
+              "type": "string",
+              "format": "uri"
+            },
+            {
+              "$ref": "#/definitions/consumerLinks_11"
+            }
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "consumerLinks_11": {
+      "type": "object",
+      "required": [
+        "href"
+      ],
+      "properties": {
+        "href": {
+          "description": "A string containing the link's URL.",
+          "type": "string",
+          "format": "uri"
+        },
+        "meta": {
+          "$ref": "#/definitions/consumerLinks_11Meta"
+        }
+      }
+    },
+    "consumerLinks_11Meta": {
+      "description": "Non-standard meta-information that can not be represented as an attribute or relationship.",
+      "type": "object",
+      "properties": {
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": true
+    },
+    "consumerMeta_1": {
+      "description": "Non-standard meta-information that can not be represented as an attribute or relationship.",
+      "type": "object",
+      "properties": {
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": true
+    },
     "dealer": {
       "id": "https://a2d-api.toyota-europe.com/docs/dealer-schema-v2/schema.json",
       "$schema": "http://json-schema.org/draft-04/hyper-schema",
       "title": "TME Dealer Finder - Outlet Schema",
       "description": "this schema describes an outlet in the Toyota Motor Europe dealer network",
       "type": "object",
-      "required": [
-        "uuid"
-      ],
       "properties": {
         "addresses": {
           "description": "A list of addresses associated with this outlet",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerAddresses"
+            "$ref": "#/definitions/dealerAddresses_2"
           }
         },
         "applications": {
@@ -33,7 +1015,7 @@
           "description": "The brands this outlet sells",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerBrands"
+            "$ref": "#/definitions/dealerBrands_2"
           }
         },
         "country": {
@@ -478,8 +1460,7 @@
             "yi",
             "ji",
             "yo",
-            "zu",
-            null
+            "zu"
           ]
         },
         "lastModificationDate": {
@@ -501,7 +1482,7 @@
         "openDays": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerOpenDays"
+            "$ref": "#/definitions/dealerOpenDays_1"
           }
         },
         "operatingCompany": {
@@ -527,7 +1508,7 @@
                   "description": "A list of addresses associated with this operating company",
                   "type": "array",
                   "items": {
-                    "$ref": "#/definitions/dealerAddresses_1"
+                    "$ref": "#/definitions/dealerAddresses_3"
                   }
                 },
                 "applications": {
@@ -537,7 +1518,7 @@
                   "description": "The brands this outlet sells",
                   "type": "array",
                   "items": {
-                    "$ref": "#/definitions/dealerBrands_1"
+                    "$ref": "#/definitions/dealerBrands_3"
                   }
                 },
                 "defaultAddress": {
@@ -603,7 +1584,7 @@
           "example": "['Body Shop', 'Showroom']",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerOperations"
+            "$ref": "#/definitions/dealerOperations_1"
           }
         },
         "outletAfterSales": {
@@ -659,29 +1640,10 @@
           "description": "The unique identifier of the outlet. This value should be used to identify a dealer.",
           "type": "string"
         }
-      }
+      },
+      "additionalProperties": true
     },
     "dealerDefinitionAddress": {
-      "required": [
-        "addressCode",
-        "addressCountry",
-        "addressLine1",
-        "addressLine2",
-        "authorisedRepairer",
-        "authorisedRetailer",
-        "city",
-        "defaultAddress",
-        "endDate",
-        "geoLocation",
-        "language",
-        "operations",
-        "province",
-        "region",
-        "startDate",
-        "status",
-        "vatRegion",
-        "zip"
-      ],
       "description": "a representation of an address",
       "type": "object",
       "properties": {
@@ -1135,8 +2097,7 @@
             "yi",
             "ji",
             "yo",
-            "zu",
-            null
+            "zu"
           ]
         },
         "operations": {
@@ -1144,7 +2105,7 @@
           "example": "['Body Shop', 'Showroom']",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerDefinitionAddressOperations"
+            "$ref": "#/definitions/dealerDefinitionAddressOperations_1"
           }
         },
         "province": {
@@ -1256,7 +2217,7 @@
           "description": "A list of addresses associated with this operating company",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerDefinitionOperatingCompanyAddresses"
+            "$ref": "#/definitions/dealerDefinitionOperatingCompanyAddresses_1"
           }
         },
         "applications": {
@@ -1266,7 +2227,7 @@
           "description": "The brands this outlet sells",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerDefinitionOperatingCompanyBrands"
+            "$ref": "#/definitions/dealerDefinitionOperatingCompanyBrands_1"
           }
         },
         "defaultAddress": {
@@ -1326,26 +2287,6 @@
       }
     },
     "dealerDefinitionOperatingCompanyAddresses": {
-      "required": [
-        "addressCode",
-        "addressCountry",
-        "addressLine1",
-        "addressLine2",
-        "authorisedRepairer",
-        "authorisedRetailer",
-        "city",
-        "defaultAddress",
-        "endDate",
-        "geoLocation",
-        "language",
-        "operations",
-        "province",
-        "region",
-        "startDate",
-        "status",
-        "vatRegion",
-        "zip"
-      ],
       "description": "a representation of an address",
       "type": "object",
       "properties": {
@@ -1799,8 +2740,7 @@
             "yi",
             "ji",
             "yo",
-            "zu",
-            null
+            "zu"
           ]
         },
         "operations": {
@@ -1808,7 +2748,7 @@
           "example": "['Body Shop', 'Showroom']",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerDefinitionOperatingCompanyAddressesOperations"
+            "$ref": "#/definitions/dealerDefinitionOperatingCompanyAddressesOperations_1"
           }
         },
         "province": {
@@ -2013,26 +2953,6 @@
       ]
     },
     "dealerDefinitionOperatingCompany0": {
-      "required": [
-        "addressCode",
-        "addressCountry",
-        "addressLine1",
-        "addressLine2",
-        "authorisedRepairer",
-        "authorisedRetailer",
-        "city",
-        "defaultAddress",
-        "endDate",
-        "geoLocation",
-        "language",
-        "operations",
-        "province",
-        "region",
-        "startDate",
-        "status",
-        "vatRegion",
-        "zip"
-      ],
       "description": "a representation of an address",
       "type": "object",
       "properties": {
@@ -2486,8 +3406,7 @@
             "yi",
             "ji",
             "yo",
-            "zu",
-            null
+            "zu"
           ]
         },
         "operations": {
@@ -2495,7 +3414,7 @@
           "example": "['Body Shop', 'Showroom']",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerDefinitionOperatingCompany0Operations"
+            "$ref": "#/definitions/dealerDefinitionOperatingCompany0Operations_1"
           }
         },
         "province": {
@@ -2575,7 +3494,7 @@
           "example": "[\"test@example.com\"]",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerDefinitionOperatingCompanyEmailBrochure"
+            "$ref": "#/definitions/dealerDefinitionOperatingCompanyEmailBrochure_1"
           }
         },
         "CarRental": {
@@ -2583,7 +3502,7 @@
           "example": "[\"test@example.com\"]",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerDefinitionOperatingCompanyEmailCarRental"
+            "$ref": "#/definitions/dealerDefinitionOperatingCompanyEmailCarRental_1"
           }
         },
         "Contact": {
@@ -2591,7 +3510,7 @@
           "example": "[\"test@example.com\"]",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerDefinitionOperatingCompanyEmailContact"
+            "$ref": "#/definitions/dealerDefinitionOperatingCompanyEmailContact_1"
           }
         },
         "AddressDefault": {
@@ -2599,7 +3518,7 @@
           "example": "[\"test@example.com\"]",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerDefinitionOperatingCompanyEmailAddressDefault"
+            "$ref": "#/definitions/dealerDefinitionOperatingCompanyEmailAddressDefault_1"
           }
         },
         "OpCompanyDefault": {
@@ -2607,7 +3526,7 @@
           "example": "[\"test@example.com\"]",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerDefinitionOperatingCompanyEmailOpCompanyDefault"
+            "$ref": "#/definitions/dealerDefinitionOperatingCompanyEmailOpCompanyDefault_1"
           }
         },
         "OSB": {
@@ -2615,7 +3534,7 @@
           "example": "[\"test@example.com\"]",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerDefinitionOperatingCompanyEmailOSB"
+            "$ref": "#/definitions/dealerDefinitionOperatingCompanyEmailOSB_1"
           }
         },
         "OutletDefault": {
@@ -2623,7 +3542,7 @@
           "example": "[\"test@example.com\"]",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerDefinitionOperatingCompanyEmailOutletDefault"
+            "$ref": "#/definitions/dealerDefinitionOperatingCompanyEmailOutletDefault_1"
           }
         },
         "SendToDealer": {
@@ -2631,7 +3550,7 @@
           "example": "[\"test@example.com\"]",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerDefinitionOperatingCompanyEmailSendToDealer"
+            "$ref": "#/definitions/dealerDefinitionOperatingCompanyEmailSendToDealer_1"
           }
         },
         "TestDrive": {
@@ -2639,7 +3558,7 @@
           "example": "[\"test@example.com\"]",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerDefinitionOperatingCompanyEmailTestDrive"
+            "$ref": "#/definitions/dealerDefinitionOperatingCompanyEmailTestDrive_1"
           }
         }
       },
@@ -3192,8 +4111,7 @@
         "yi",
         "ji",
         "yo",
-        "zu",
-        null
+        "zu"
       ]
     },
     "dealerDefinitionOperation": {
@@ -3330,7 +4248,7 @@
         "openingHours": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerDefinitionOpenDayOpeningHours"
+            "$ref": "#/definitions/dealerDefinitionOpenDayOpeningHours_1"
           }
         }
       },
@@ -3609,7 +4527,7 @@
           "example": "[\"test@example.com\"]",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerDefinitionEmailsBrochure"
+            "$ref": "#/definitions/dealerDefinitionEmailsBrochure_1"
           }
         },
         "CarRental": {
@@ -3617,7 +4535,7 @@
           "example": "[\"test@example.com\"]",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerDefinitionEmailsCarRental"
+            "$ref": "#/definitions/dealerDefinitionEmailsCarRental_1"
           }
         },
         "Contact": {
@@ -3625,7 +4543,7 @@
           "example": "[\"test@example.com\"]",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerDefinitionEmailsContact"
+            "$ref": "#/definitions/dealerDefinitionEmailsContact_1"
           }
         },
         "AddressDefault": {
@@ -3633,7 +4551,7 @@
           "example": "[\"test@example.com\"]",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerDefinitionEmailsAddressDefault"
+            "$ref": "#/definitions/dealerDefinitionEmailsAddressDefault_1"
           }
         },
         "OpCompanyDefault": {
@@ -3641,7 +4559,7 @@
           "example": "[\"test@example.com\"]",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerDefinitionEmailsOpCompanyDefault"
+            "$ref": "#/definitions/dealerDefinitionEmailsOpCompanyDefault_1"
           }
         },
         "OSB": {
@@ -3649,7 +4567,7 @@
           "example": "[\"test@example.com\"]",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerDefinitionEmailsOSB"
+            "$ref": "#/definitions/dealerDefinitionEmailsOSB_1"
           }
         },
         "OutletDefault": {
@@ -3657,7 +4575,7 @@
           "example": "[\"test@example.com\"]",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerDefinitionEmailsOutletDefault"
+            "$ref": "#/definitions/dealerDefinitionEmailsOutletDefault_1"
           }
         },
         "SendToDealer": {
@@ -3665,7 +4583,7 @@
           "example": "[\"test@example.com\"]",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerDefinitionEmailsSendToDealer"
+            "$ref": "#/definitions/dealerDefinitionEmailsSendToDealer_1"
           }
         },
         "TestDrive": {
@@ -3673,7 +4591,7 @@
           "example": "[\"test@example.com\"]",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerDefinitionEmailsTestDrive"
+            "$ref": "#/definitions/dealerDefinitionEmailsTestDrive_1"
           }
         }
       },
@@ -3835,26 +4753,6 @@
       }
     },
     "dealerAddresses": {
-      "required": [
-        "addressCode",
-        "addressCountry",
-        "addressLine1",
-        "addressLine2",
-        "authorisedRepairer",
-        "authorisedRetailer",
-        "city",
-        "defaultAddress",
-        "endDate",
-        "geoLocation",
-        "language",
-        "operations",
-        "province",
-        "region",
-        "startDate",
-        "status",
-        "vatRegion",
-        "zip"
-      ],
       "description": "a representation of an address",
       "type": "object",
       "properties": {
@@ -4308,8 +5206,7 @@
             "yi",
             "ji",
             "yo",
-            "zu",
-            null
+            "zu"
           ]
         },
         "operations": {
@@ -4317,7 +5214,7 @@
           "example": "['Body Shop', 'Showroom']",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerAddressesOperations"
+            "$ref": "#/definitions/dealerAddressesOperations_1"
           }
         },
         "province": {
@@ -4523,26 +5420,6 @@
       ]
     },
     "dealer0": {
-      "required": [
-        "addressCode",
-        "addressCountry",
-        "addressLine1",
-        "addressLine2",
-        "authorisedRepairer",
-        "authorisedRetailer",
-        "city",
-        "defaultAddress",
-        "endDate",
-        "geoLocation",
-        "language",
-        "operations",
-        "province",
-        "region",
-        "startDate",
-        "status",
-        "vatRegion",
-        "zip"
-      ],
       "description": "a representation of an address",
       "type": "object",
       "properties": {
@@ -4996,8 +5873,7 @@
             "yi",
             "ji",
             "yo",
-            "zu",
-            null
+            "zu"
           ]
         },
         "operations": {
@@ -5005,7 +5881,7 @@
           "example": "['Body Shop', 'Showroom']",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealer0Operations"
+            "$ref": "#/definitions/dealer0Operations_1"
           }
         },
         "province": {
@@ -5085,7 +5961,7 @@
           "example": "[\"test@example.com\"]",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerEmailBrochure"
+            "$ref": "#/definitions/dealerEmailBrochure_1"
           }
         },
         "CarRental": {
@@ -5093,7 +5969,7 @@
           "example": "[\"test@example.com\"]",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerEmailCarRental"
+            "$ref": "#/definitions/dealerEmailCarRental_1"
           }
         },
         "Contact": {
@@ -5101,7 +5977,7 @@
           "example": "[\"test@example.com\"]",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerEmailContact"
+            "$ref": "#/definitions/dealerEmailContact_1"
           }
         },
         "AddressDefault": {
@@ -5109,7 +5985,7 @@
           "example": "[\"test@example.com\"]",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerEmailAddressDefault"
+            "$ref": "#/definitions/dealerEmailAddressDefault_1"
           }
         },
         "OpCompanyDefault": {
@@ -5117,7 +5993,7 @@
           "example": "[\"test@example.com\"]",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerEmailOpCompanyDefault"
+            "$ref": "#/definitions/dealerEmailOpCompanyDefault_1"
           }
         },
         "OSB": {
@@ -5125,7 +6001,7 @@
           "example": "[\"test@example.com\"]",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerEmailOSB"
+            "$ref": "#/definitions/dealerEmailOSB_1"
           }
         },
         "OutletDefault": {
@@ -5133,7 +6009,7 @@
           "example": "[\"test@example.com\"]",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerEmailOutletDefault"
+            "$ref": "#/definitions/dealerEmailOutletDefault_1"
           }
         },
         "SendToDealer": {
@@ -5141,7 +6017,7 @@
           "example": "[\"test@example.com\"]",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerEmailSendToDealer"
+            "$ref": "#/definitions/dealerEmailSendToDealer_1"
           }
         },
         "TestDrive": {
@@ -5149,7 +6025,7 @@
           "example": "[\"test@example.com\"]",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerEmailTestDrive"
+            "$ref": "#/definitions/dealerEmailTestDrive_1"
           }
         }
       },
@@ -5264,7 +6140,7 @@
         "openingHours": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerOpenDaysOpeningHours"
+            "$ref": "#/definitions/dealerOpenDaysOpeningHours_1"
           }
         }
       },
@@ -5451,26 +6327,6 @@
       "additionalProperties": false
     },
     "dealerAddresses_1": {
-      "required": [
-        "addressCode",
-        "addressCountry",
-        "addressLine1",
-        "addressLine2",
-        "authorisedRepairer",
-        "authorisedRetailer",
-        "city",
-        "defaultAddress",
-        "endDate",
-        "geoLocation",
-        "language",
-        "operations",
-        "province",
-        "region",
-        "startDate",
-        "status",
-        "vatRegion",
-        "zip"
-      ],
       "description": "a representation of an address",
       "type": "object",
       "properties": {
@@ -5924,8 +6780,7 @@
             "yi",
             "ji",
             "yo",
-            "zu",
-            null
+            "zu"
           ]
         },
         "operations": {
@@ -5933,7 +6788,7 @@
           "example": "['Body Shop', 'Showroom']",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerAddresses_1Operations"
+            "$ref": "#/definitions/dealerAddresses_1Operations_1"
           }
         },
         "province": {
@@ -6138,26 +6993,6 @@
       ]
     },
     "dealer0_1": {
-      "required": [
-        "addressCode",
-        "addressCountry",
-        "addressLine1",
-        "addressLine2",
-        "authorisedRepairer",
-        "authorisedRetailer",
-        "city",
-        "defaultAddress",
-        "endDate",
-        "geoLocation",
-        "language",
-        "operations",
-        "province",
-        "region",
-        "startDate",
-        "status",
-        "vatRegion",
-        "zip"
-      ],
       "description": "a representation of an address",
       "type": "object",
       "properties": {
@@ -6611,8 +7446,7 @@
             "yi",
             "ji",
             "yo",
-            "zu",
-            null
+            "zu"
           ]
         },
         "operations": {
@@ -6620,7 +7454,7 @@
           "example": "['Body Shop', 'Showroom']",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealer0_1Operations"
+            "$ref": "#/definitions/dealer0_1Operations_1"
           }
         },
         "province": {
@@ -6700,7 +7534,7 @@
           "example": "[\"test@example.com\"]",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerEmail_1Brochure"
+            "$ref": "#/definitions/dealerEmail_1Brochure_1"
           }
         },
         "CarRental": {
@@ -6708,7 +7542,7 @@
           "example": "[\"test@example.com\"]",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerEmail_1CarRental"
+            "$ref": "#/definitions/dealerEmail_1CarRental_1"
           }
         },
         "Contact": {
@@ -6716,7 +7550,7 @@
           "example": "[\"test@example.com\"]",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerEmail_1Contact"
+            "$ref": "#/definitions/dealerEmail_1Contact_1"
           }
         },
         "AddressDefault": {
@@ -6724,7 +7558,7 @@
           "example": "[\"test@example.com\"]",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerEmail_1AddressDefault"
+            "$ref": "#/definitions/dealerEmail_1AddressDefault_1"
           }
         },
         "OpCompanyDefault": {
@@ -6732,7 +7566,7 @@
           "example": "[\"test@example.com\"]",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerEmail_1OpCompanyDefault"
+            "$ref": "#/definitions/dealerEmail_1OpCompanyDefault_1"
           }
         },
         "OSB": {
@@ -6740,7 +7574,7 @@
           "example": "[\"test@example.com\"]",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerEmail_1OSB"
+            "$ref": "#/definitions/dealerEmail_1OSB_1"
           }
         },
         "OutletDefault": {
@@ -6748,7 +7582,7 @@
           "example": "[\"test@example.com\"]",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerEmail_1OutletDefault"
+            "$ref": "#/definitions/dealerEmail_1OutletDefault_1"
           }
         },
         "SendToDealer": {
@@ -6756,7 +7590,7 @@
           "example": "[\"test@example.com\"]",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerEmail_1SendToDealer"
+            "$ref": "#/definitions/dealerEmail_1SendToDealer_1"
           }
         },
         "TestDrive": {
@@ -6764,7 +7598,7 @@
           "example": "[\"test@example.com\"]",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dealerEmail_1TestDrive"
+            "$ref": "#/definitions/dealerEmail_1TestDrive_1"
           }
         }
       },
@@ -7083,6 +7917,323 @@
         }
       },
       "additionalProperties": false
+    },
+    "product": {
+      "id": "http://localhost:8080/schema/product#",
+      "$schema": "http://json-schema.org/draft-04/hyper-schema",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "brand": {
+          "type": "string",
+          "example": "TOYOTA"
+        },
+        "model": {
+          "type": "string",
+          "example": "AVENSIS"
+        },
+        "katashiki": {
+          "type": "string",
+          "example": "ADT270L-AEFGYW"
+        },
+        "localModelCode": {
+          "type": "string",
+          "example": "*NMSCLOCALCODE*"
+        },
+        "suffix": {
+          "type": "string",
+          "example": "1A"
+        },
+        "project": {
+          "type": "string",
+          "example": "870A"
+        },
+        "projectId": {
+          "type": "string",
+          "example": "c8f43243-d333-4d77-9270-aef5c1a3fb7a"
+        },
+        "orderableSuffixId": {
+          "type": "string",
+          "example": "c8f43243-d333-4d77-9270-aef5c1a3fb7a"
+        },
+        "localConfigurationId": {
+          "type": "string",
+          "example": "c8f43243-d333-4d77-9270-aef5c1a3fb7a"
+        }
+      }
+    },
+    "response": {
+      "id": "http://localhost:8080/schema/response#",
+      "$schema": "http://json-schema.org/draft-04/hyper-schema",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "activityType": {
+          "type": "string",
+          "enum": [
+            "OutgoingEmail",
+            "OutgoingPhone",
+            "InvalidLead",
+            "RestoreLead"
+          ]
+        },
+        "duration": {
+          "type": "integer",
+          "description": "Response duration in minutes."
+        },
+        "salesPerson": {
+          "$ref": "#/definitions/responseSalesPerson"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Any details on the response. (eg. phone conversation detail, or URL to the mail response)"
+        },
+        "time": {
+          "type": "string",
+          "description": "Response time in UTC time."
+        }
+      }
+    },
+    "responseSalesPerson": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Not used by TME. Fill in local ID for your own future reference."
+        },
+        "name": {
+          "type": "string",
+          "description": "The full name of the salesperson."
+        },
+        "email": {
+          "type": "string"
+        }
+      }
+    },
+    "vehicle": {
+      "id": "http://localhost:8080/schema/vehicle#",
+      "$schema": "http://json-schema.org/draft-04/hyper-schema",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "vin": {
+          "type": "string",
+          "example": "AHTDR22G305521913"
+        },
+        "initRegDate": {
+          "type": "string",
+          "example": "01/03/2014"
+        },
+        "regNumber": {
+          "type": "string",
+          "example": "1-AGX909"
+        }
+      }
+    },
+    "processedByProcessors_1": {
+      "$ref": "#/definitions/processedByProcessors"
+    },
+    "consumer1_2": {
+      "$ref": "#/definitions/consumer1_1"
+    },
+    "consumerAttributes1_9": {
+      "$ref": "#/definitions/consumerAttributes1"
+    },
+    "consumerAttributes1_10": {
+      "$ref": "#/definitions/consumerAttributes1_1"
+    },
+    "consumerAttributes1_11": {
+      "$ref": "#/definitions/consumerAttributes1_2"
+    },
+    "consumerAttributes1_12": {
+      "$ref": "#/definitions/consumerAttributes1_3"
+    },
+    "consumerAttributes1_13": {
+      "$ref": "#/definitions/consumerAttributes1_4"
+    },
+    "consumerAttributes1_14": {
+      "$ref": "#/definitions/consumerAttributes1_5"
+    },
+    "consumerAttributes1_15": {
+      "$ref": "#/definitions/consumerAttributes1_6"
+    },
+    "consumerAttributes1_16": {
+      "$ref": "#/definitions/consumerAttributes1_7"
+    },
+    "consumerAttributes1_17": {
+      "$ref": "#/definitions/consumerAttributes1_8"
+    },
+    "consumerAttributesInternalSystemIdentifiers_1": {
+      "$ref": "#/definitions/consumerAttributesInternalSystemIdentifiers"
+    },
+    "consumerAttributesContactPointsAddresses_1": {
+      "$ref": "#/definitions/consumerAttributesContactPointsAddresses"
+    },
+    "consumerAttributesContactPointsEmails_1": {
+      "$ref": "#/definitions/consumerAttributesContactPointsEmails"
+    },
+    "consumerAttributesContactPointsTelephones_1": {
+      "$ref": "#/definitions/consumerAttributesContactPointsTelephones"
+    },
+    "dealerAddresses_2": {
+      "$ref": "#/definitions/dealerAddresses"
+    },
+    "dealerBrands_2": {
+      "$ref": "#/definitions/dealerBrands"
+    },
+    "dealerOpenDays_1": {
+      "$ref": "#/definitions/dealerOpenDays"
+    },
+    "dealerAddresses_3": {
+      "$ref": "#/definitions/dealerAddresses_1"
+    },
+    "dealerBrands_3": {
+      "$ref": "#/definitions/dealerBrands_1"
+    },
+    "dealerOperations_1": {
+      "$ref": "#/definitions/dealerOperations"
+    },
+    "dealerDefinitionAddressOperations_1": {
+      "$ref": "#/definitions/dealerDefinitionAddressOperations"
+    },
+    "dealerDefinitionOperatingCompanyAddresses_1": {
+      "$ref": "#/definitions/dealerDefinitionOperatingCompanyAddresses"
+    },
+    "dealerDefinitionOperatingCompanyBrands_1": {
+      "$ref": "#/definitions/dealerDefinitionOperatingCompanyBrands"
+    },
+    "dealerDefinitionOperatingCompanyAddressesOperations_1": {
+      "$ref": "#/definitions/dealerDefinitionOperatingCompanyAddressesOperations"
+    },
+    "dealerDefinitionOperatingCompany0Operations_1": {
+      "$ref": "#/definitions/dealerDefinitionOperatingCompany0Operations"
+    },
+    "dealerDefinitionOperatingCompanyEmailBrochure_1": {
+      "$ref": "#/definitions/dealerDefinitionOperatingCompanyEmailBrochure"
+    },
+    "dealerDefinitionOperatingCompanyEmailCarRental_1": {
+      "$ref": "#/definitions/dealerDefinitionOperatingCompanyEmailCarRental"
+    },
+    "dealerDefinitionOperatingCompanyEmailContact_1": {
+      "$ref": "#/definitions/dealerDefinitionOperatingCompanyEmailContact"
+    },
+    "dealerDefinitionOperatingCompanyEmailAddressDefault_1": {
+      "$ref": "#/definitions/dealerDefinitionOperatingCompanyEmailAddressDefault"
+    },
+    "dealerDefinitionOperatingCompanyEmailOpCompanyDefault_1": {
+      "$ref": "#/definitions/dealerDefinitionOperatingCompanyEmailOpCompanyDefault"
+    },
+    "dealerDefinitionOperatingCompanyEmailOSB_1": {
+      "$ref": "#/definitions/dealerDefinitionOperatingCompanyEmailOSB"
+    },
+    "dealerDefinitionOperatingCompanyEmailOutletDefault_1": {
+      "$ref": "#/definitions/dealerDefinitionOperatingCompanyEmailOutletDefault"
+    },
+    "dealerDefinitionOperatingCompanyEmailSendToDealer_1": {
+      "$ref": "#/definitions/dealerDefinitionOperatingCompanyEmailSendToDealer"
+    },
+    "dealerDefinitionOperatingCompanyEmailTestDrive_1": {
+      "$ref": "#/definitions/dealerDefinitionOperatingCompanyEmailTestDrive"
+    },
+    "dealerDefinitionOpenDayOpeningHours_1": {
+      "$ref": "#/definitions/dealerDefinitionOpenDayOpeningHours"
+    },
+    "dealerDefinitionEmailsBrochure_1": {
+      "$ref": "#/definitions/dealerDefinitionEmailsBrochure"
+    },
+    "dealerDefinitionEmailsCarRental_1": {
+      "$ref": "#/definitions/dealerDefinitionEmailsCarRental"
+    },
+    "dealerDefinitionEmailsContact_1": {
+      "$ref": "#/definitions/dealerDefinitionEmailsContact"
+    },
+    "dealerDefinitionEmailsAddressDefault_1": {
+      "$ref": "#/definitions/dealerDefinitionEmailsAddressDefault"
+    },
+    "dealerDefinitionEmailsOpCompanyDefault_1": {
+      "$ref": "#/definitions/dealerDefinitionEmailsOpCompanyDefault"
+    },
+    "dealerDefinitionEmailsOSB_1": {
+      "$ref": "#/definitions/dealerDefinitionEmailsOSB"
+    },
+    "dealerDefinitionEmailsOutletDefault_1": {
+      "$ref": "#/definitions/dealerDefinitionEmailsOutletDefault"
+    },
+    "dealerDefinitionEmailsSendToDealer_1": {
+      "$ref": "#/definitions/dealerDefinitionEmailsSendToDealer"
+    },
+    "dealerDefinitionEmailsTestDrive_1": {
+      "$ref": "#/definitions/dealerDefinitionEmailsTestDrive"
+    },
+    "dealerAddressesOperations_1": {
+      "$ref": "#/definitions/dealerAddressesOperations"
+    },
+    "dealer0Operations_1": {
+      "$ref": "#/definitions/dealer0Operations"
+    },
+    "dealerEmailBrochure_1": {
+      "$ref": "#/definitions/dealerEmailBrochure"
+    },
+    "dealerEmailCarRental_1": {
+      "$ref": "#/definitions/dealerEmailCarRental"
+    },
+    "dealerEmailContact_1": {
+      "$ref": "#/definitions/dealerEmailContact"
+    },
+    "dealerEmailAddressDefault_1": {
+      "$ref": "#/definitions/dealerEmailAddressDefault"
+    },
+    "dealerEmailOpCompanyDefault_1": {
+      "$ref": "#/definitions/dealerEmailOpCompanyDefault"
+    },
+    "dealerEmailOSB_1": {
+      "$ref": "#/definitions/dealerEmailOSB"
+    },
+    "dealerEmailOutletDefault_1": {
+      "$ref": "#/definitions/dealerEmailOutletDefault"
+    },
+    "dealerEmailSendToDealer_1": {
+      "$ref": "#/definitions/dealerEmailSendToDealer"
+    },
+    "dealerEmailTestDrive_1": {
+      "$ref": "#/definitions/dealerEmailTestDrive"
+    },
+    "dealerOpenDaysOpeningHours_1": {
+      "$ref": "#/definitions/dealerOpenDaysOpeningHours"
+    },
+    "dealerAddresses_1Operations_1": {
+      "$ref": "#/definitions/dealerAddresses_1Operations"
+    },
+    "dealer0_1Operations_1": {
+      "$ref": "#/definitions/dealer0_1Operations"
+    },
+    "dealerEmail_1Brochure_1": {
+      "$ref": "#/definitions/dealerEmail_1Brochure"
+    },
+    "dealerEmail_1CarRental_1": {
+      "$ref": "#/definitions/dealerEmail_1CarRental"
+    },
+    "dealerEmail_1Contact_1": {
+      "$ref": "#/definitions/dealerEmail_1Contact"
+    },
+    "dealerEmail_1AddressDefault_1": {
+      "$ref": "#/definitions/dealerEmail_1AddressDefault"
+    },
+    "dealerEmail_1OpCompanyDefault_1": {
+      "$ref": "#/definitions/dealerEmail_1OpCompanyDefault"
+    },
+    "dealerEmail_1OSB_1": {
+      "$ref": "#/definitions/dealerEmail_1OSB"
+    },
+    "dealerEmail_1OutletDefault_1": {
+      "$ref": "#/definitions/dealerEmail_1OutletDefault"
+    },
+    "dealerEmail_1SendToDealer_1": {
+      "$ref": "#/definitions/dealerEmail_1SendToDealer"
+    },
+    "dealerEmail_1TestDrive_1": {
+      "$ref": "#/definitions/dealerEmail_1TestDrive"
     }
   }
 }
