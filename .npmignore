@@ -1,7 +1,4 @@
-# system
-
+.vscode
+.idea
 .DS_Store
-
-# node
-
-node_modules/
+node_modules

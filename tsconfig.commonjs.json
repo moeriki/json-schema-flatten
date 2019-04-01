@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "declaration": true,
+    "target": "es5",
+    "lib": ["esnext"],
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "outDir": "dist/commonjs",
+    "sourceMap": true
+  },
+  "include": [
+    "index.ts",
+    "lib/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "__tests__",
+    "dist"
+  ]
+}

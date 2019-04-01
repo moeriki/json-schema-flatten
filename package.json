@@ -2,28 +2,37 @@
   "name": "json-schema-flatten",
   "version": "0.10.2",
   "description": "Flatten a JSON schemas with internal references.",
-  "main": "es5/index.js",
+  "main": "dist/commonjs/index.js",
+  "module": "dist/mjs/index.js",
+  "typings": "src/index.ts",
   "scripts": {
-    "build": "babel index.js --source-maps inline --out-file es5/index.js",
-    "prepublish": "npm run test && npm run build",
-    "test": "mocha --compilers js:babel-register test.js"
+    "build": "tsc -b",
+    "test": "jest",
+    "prepare": "npm run test && npm run build"
   },
-  "author": "dieter@moeriki.com",
+  "authors": [
+    "dieter@moeriki.com",
+    "Matt Scheurich <matt@lvl99.com>"
+  ],
   "license": "ISC",
   "repository": "git@github.com:Moeriki/json-schema-flatten.git",
   "dependencies": {
-    "capitalize": "^1.0.0",
-    "clone-deep": "^0.2.3"
+    "capitalize": "^2.0.0",
+    "lodash": "^4.17.11"
   },
   "devDependencies": {
-    "babel-cli": "^6.3.17",
-    "babel-eslint": "^5.0.0-beta4",
-    "babel-plugin-add-module-exports": "^0.1.2",
-    "babel-polyfill": "^6.3.14",
-    "babel-preset-es2015": "^6.3.13",
-    "babel-register": "^6.3.13",
-    "chai": "^3.4.1",
-    "deep-freeze": "0.0.1",
-    "mocha": "^2.3.4"
+    "@types/capitalize": "^1.0.1",
+    "@types/jest": "^24.0.11",
+    "@types/json-schema": "^7.0.3",
+    "@types/lodash": "^4.14.123",
+    "@typescript-eslint/eslint-plugin": "^1.5.0",
+    "@typescript-eslint/parser": "^1.5.0",
+    "acorn": "^6.1.1",
+    "eslint": "^5.16.0",
+    "jest": "^24.5.0",
+    "json-schema": "^0.2.3",
+    "ts-jest": "^24.0.1",
+    "tslib": "^1.9.3",
+    "typescript": "3.3.3"
   }
 }
