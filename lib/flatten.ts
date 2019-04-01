@@ -5,19 +5,22 @@ import set from "lodash/set";
 import cloneDeep from "lodash/cloneDeep";
 import isObject from "lodash/isObject";
 
-interface JSONSchema4Object extends JSONSchema4 {
+export interface JSONSchema4Object extends JSONSchema4 {
   [propName: string]: any;
 }
 
-interface JSONSchema6Object extends JSONSchema6 {
+export interface JSONSchema6Object extends JSONSchema6 {
   [propName: string]: any;
 }
 
-interface JSONSchema7Object extends JSONSchema7 {
+export interface JSONSchema7Object extends JSONSchema7 {
   [propName: string]: any;
 }
 
-type JSONSchema = JSONSchema4Object | JSONSchema6Object | JSONSchema7Object;
+export type JSONSchema =
+  | JSONSchema4Object
+  | JSONSchema6Object
+  | JSONSchema7Object;
 
 interface CrawlOptions {
   basePath?: string;
@@ -41,10 +44,10 @@ export function isJSONSchema(obj: object) {
 
 /**
  * Flatten a JSON schema.
- * @param  {object} schema a JSON schema
- * @return {object} new JSON schema with flattened object structure
+ * @param  {object|JSONSchema} schema a JSON schema
+ * @return {JSONSchema} new JSON schema with flattened object structure
  */
-export default function flatten(schema: object | JSONSchema): JSONSchema {
+export function flatten(schema: object | JSONSchema): JSONSchema {
   const newSchema: JSONSchema = {
     definitions: undefined,
     ...cloneDeep(schema)
@@ -61,7 +64,7 @@ export default function flatten(schema: object | JSONSchema): JSONSchema {
    * @param {string} name
    * @return {string}
    */
-  function findFreeDefinitionName(name: string) {
+  function findFreeDefinitionName(name: string): string {
     // Name doesn't exist in definitions, so add as is
     if (!definitions[name]) {
       return name;
@@ -159,3 +162,5 @@ export default function flatten(schema: object | JSONSchema): JSONSchema {
 
   return newSchema;
 }
+
+export default flatten;

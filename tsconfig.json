@@ -26,6 +26,9 @@
   "references": [
     {
       "path": "tsconfig.commonjs.json"
+    },
+    {
+      "path": "tsconfig.mjs.json"
     }
   ]
 }

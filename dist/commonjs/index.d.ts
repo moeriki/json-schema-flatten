@@ -1,5 +1,3 @@
-import flatten from "./lib/flatten";
-declare const _default: {
-    flatten: typeof flatten;
-};
-export default _default;
+import * as libFlatten from "./lib/flatten";
+export declare const flatten: typeof libFlatten.flatten;
+export declare const isJSONSchema: typeof libFlatten.isJSONSchema;

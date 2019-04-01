@@ -1,10 +1,4 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var flatten_1 = __importDefault(require("./lib/flatten"));
-exports.default = {
-    flatten: flatten_1.default
-};
+import * as libFlatten from "./lib/flatten";
+export var flatten = libFlatten.flatten;
+export var isJSONSchema = libFlatten.isJSONSchema;
 //# sourceMappingURL=index.js.map

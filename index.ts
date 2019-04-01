@@ -1,5 +1,4 @@
-import flatten from "./lib/flatten";
+import * as libFlatten from "./lib/flatten";
 
-export default {
-  flatten
-};
+export const flatten = libFlatten.flatten;
+export const isJSONSchema = libFlatten.isJSONSchema;
