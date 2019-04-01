@@ -1,26 +1,9 @@
-import { JSONSchema4, JSONSchema6, JSONSchema7 } from "json-schema";
 import capitalize from "capitalize";
 import get from "lodash/get";
 import set from "lodash/set";
 import cloneDeep from "lodash/cloneDeep";
 import isObject from "lodash/isObject";
-
-export interface JSONSchema4Object extends JSONSchema4 {
-  [propName: string]: any;
-}
-
-export interface JSONSchema6Object extends JSONSchema6 {
-  [propName: string]: any;
-}
-
-export interface JSONSchema7Object extends JSONSchema7 {
-  [propName: string]: any;
-}
-
-export type JSONSchema =
-  | JSONSchema4Object
-  | JSONSchema6Object
-  | JSONSchema7Object;
+import { JSONSchema } from "./types";
 
 interface CrawlOptions {
   basePath?: string;
