@@ -18,6 +18,7 @@
   "repository": "git@github.com:Moeriki/json-schema-flatten.git",
   "dependencies": {
     "capitalize": "^2.0.0",
+    "json-schema": "^0.2.3",
     "lodash": "^4.17.11"
   },
   "devDependencies": {
@@ -30,7 +31,6 @@
     "acorn": "^6.1.1",
     "eslint": "^5.16.0",
     "jest": "^24.5.0",
-    "json-schema": "^0.2.3",
     "ts-jest": "^24.0.1",
     "tslib": "^1.9.3",
     "typescript": "3.3.3"
