@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "target": "es5",
+    "lib": ["esnext"],
+    "outDir": "dist/mjs"
+  }
+}

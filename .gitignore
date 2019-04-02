@@ -1,11 +1,4 @@
-# system
-
+.vscode
+.idea
 .DS_Store
-
-# node
-
-node_modules/
-
-# project
-
-es5/
+node_modules

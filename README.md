@@ -4,17 +4,17 @@ Flatten a JSON schema separating all nested objects into referenced definitions.
 
 ## Usage
 
-```javascript
-var flatten = require('json-schema-flatten/es5');
+```typescript
+import flatten, { JSONSchema } from "json-schema-flatten";
 
-var schema = {
-  type: 'object',
+const schema: JSONSchema = {
+  type: "object",
   properties: {
     name: {
-      type: 'object', //= nested object
+      type: "object", //= nested object
       properties: {
-        first: { type: 'string' },
-        last: { type: 'string' },
+        first: { type: "string" },
+        last: { type: "string" }
       }
     }
   }
@@ -23,7 +23,7 @@ var schema = {
 console.log(flatten(schema));
 ```
 
-Will output.
+Will output:
 
 ```JSON
 {
@@ -52,9 +52,13 @@ Will output.
 ## API
 
 ```javascript
-var flatten = require('json-schema-flatten');
+// Common JS
+const { flatten } = require("json-schema-flatten");
+
+// ES6 Module
+import flatten from "json-schema-flatten";
 ```
 
-**flatten(** schema *:object* **)** *:object*
+**flatten(** schema _:object | JSONSchema_ **)** _:JSONSchema_
 
-* schema — a JSON schema. Won't be modified.
+- `schema` — a JSON schema. Won't be modified.
